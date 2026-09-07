@@ -1,0 +1,14 @@
+pre-commit:
+  parallel: true
+  commands:
+    prettier:
+      glob: '*.{js,jsx,ts,tsx,json,css,scss,md,yml,yaml}'
+      run: npx prettier --write {staged_files}
+
+    eslint:
+      glob: '*.{js,jsx,ts,tsx}'
+      run: npx eslint {staged_files}
+
+    type-check:
+      glob: '*.{ts,tsx}'
+      run: npm run type-check
