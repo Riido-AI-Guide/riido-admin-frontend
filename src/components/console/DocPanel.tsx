@@ -105,7 +105,6 @@ export function DocPanel({ docId, onClose, onSaved }: DocPanelProps) {
 
   const [isSaving, setIsSaving] = useState(false);
   const [isDrafting, setIsDrafting] = useState(false);
-  const [showContent, setShowContent] = useState(false);
 
   const data = resource.data;
 
@@ -209,6 +208,7 @@ export function DocPanel({ docId, onClose, onSaved }: DocPanelProps) {
   return (
     <Drawer
       label="근거 문서 상세"
+      className="max-w-4xl"
       onClose={onClose}
       header={
         <>
@@ -277,129 +277,141 @@ export function DocPanel({ docId, onClose, onSaved }: DocPanelProps) {
             )}
           </div>
 
-          {detail?.content && (
-            <div className="mb-4">
-              <Button variant="ghost" size="xs" onClick={() => setShowContent((v) => !v)}>
-                {showContent ? '본문 접기' : '본문 보기'}
-              </Button>
-              {showContent && (
-                <pre className="bg-muted/60 mt-2 max-h-64 overflow-y-auto rounded-lg p-3 text-xs leading-relaxed whitespace-pre-wrap">
+          <div className="grid gap-5 lg:grid-cols-2">
+            {/* 질문 쿼리는 본문을 보고 쓰는 것이라 둘을 나란히 둔다. */}
+            <section className="lg:sticky lg:top-0 lg:self-start">
+              <div className="mb-2 flex items-center justify-between">
+                <h3 className="text-sm font-medium">본문</h3>
+                <span className="text-muted-foreground text-xs tabular-nums">
+                  {(detail?.content ?? '').length.toLocaleString('ko-KR')}자
+                </span>
+              </div>
+
+              {detail?.content ? (
+                <pre className="bg-muted/60 max-h-[60vh] overflow-y-auto rounded-lg p-3 text-xs leading-relaxed whitespace-pre-wrap">
                   {detail.content}
                 </pre>
+              ) : (
+                <p className="text-muted-foreground border-border rounded-lg border border-dashed px-3 py-6 text-center text-xs">
+                  본문이 비어 있습니다.
+                </p>
               )}
-            </div>
-          )}
+            </section>
 
-          <div className="mb-2 flex items-center justify-between">
-            <h3 className="text-sm font-medium">질문 쿼리</h3>
-            <span className="text-muted-foreground text-xs tabular-nums">
-              {rows.length} / {SENTENCE_MAX_PER_DOC}
-            </span>
-          </div>
+            <section>
+              <div className="mb-2 flex items-center justify-between">
+                <h3 className="text-sm font-medium">질문 쿼리</h3>
+                <span className="text-muted-foreground text-xs tabular-nums">
+                  {rows.length} / {SENTENCE_MAX_PER_DOC}
+                </span>
+              </div>
 
-          {rows.length === 0 && (
-            <p className="text-muted-foreground border-border mb-3 rounded-lg border border-dashed px-3 py-6 text-center text-xs">
-              등록된 질문 쿼리가 없습니다. 이 문서는 벡터 검색에서 걸리지 않습니다.
-            </p>
-          )}
+              {rows.length === 0 && (
+                <p className="text-muted-foreground border-border mb-3 rounded-lg border border-dashed px-3 py-6 text-center text-xs">
+                  등록된 질문 쿼리가 없습니다. 이 문서는 벡터 검색에서 걸리지 않습니다.
+                </p>
+              )}
 
-          <ul className="flex flex-col gap-2">
-            {rows.map((row, index) => {
-              const length = row.text.trim().length;
-              const isInvalid = length < SENTENCE_TEXT_MIN || length > SENTENCE_TEXT_MAX;
+              <ul className="flex flex-col gap-2">
+                {rows.map((row, index) => {
+                  const length = row.text.trim().length;
+                  const isInvalid = length < SENTENCE_TEXT_MIN || length > SENTENCE_TEXT_MAX;
 
-              return (
-                <li
-                  key={row.key}
-                  className={cn(
-                    'rounded-lg border p-2',
-                    row.outdated ? 'border-amber-600/40 bg-amber-500/5' : 'border-border',
-                  )}
-                >
-                  <div className="mb-1.5 flex items-center gap-2">
-                    <NativeSelect
-                      className="h-7 w-32 text-xs"
-                      value={row.view_type}
-                      aria-label={`${index + 1}번 문장 유형`}
-                      onChange={(event) =>
-                        setRows((current) =>
-                          current.map((item) =>
-                            item.key === row.key
-                              ? { ...item, view_type: asViewType(event.target.value) }
-                              : item,
-                          ),
-                        )
-                      }
-                    >
-                      {VIEW_TYPES.map((type) => (
-                        <option key={type} value={type}>
-                          {VIEW_TYPE_LABELS[type]}
-                        </option>
-                      ))}
-                    </NativeSelect>
-
-                    {row.id === null && <Badge tone="info">새 문장</Badge>}
-                    {row.outdated && <Badge tone="warning">낡음</Badge>}
-                    {row.source === 'console' && <Badge tone="outline">콘솔 등록</Badge>}
-
-                    <span
+                  return (
+                    <li
+                      key={row.key}
                       className={cn(
-                        'ml-auto text-xs tabular-nums',
-                        isInvalid ? 'text-destructive' : 'text-muted-foreground',
+                        'rounded-lg border p-2',
+                        row.outdated ? 'border-amber-600/40 bg-amber-500/5' : 'border-border',
                       )}
                     >
-                      {length}/{SENTENCE_TEXT_MAX}
-                    </span>
+                      <div className="mb-1.5 flex items-center gap-2">
+                        <NativeSelect
+                          className="h-7 w-32 text-xs"
+                          value={row.view_type}
+                          aria-label={`${index + 1}번 문장 유형`}
+                          onChange={(event) =>
+                            setRows((current) =>
+                              current.map((item) =>
+                                item.key === row.key
+                                  ? { ...item, view_type: asViewType(event.target.value) }
+                                  : item,
+                              ),
+                            )
+                          }
+                        >
+                          {VIEW_TYPES.map((type) => (
+                            <option key={type} value={type}>
+                              {VIEW_TYPE_LABELS[type]}
+                            </option>
+                          ))}
+                        </NativeSelect>
 
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      aria-label={`${index + 1}번 문장 삭제`}
-                      onClick={() =>
-                        setRows((current) => current.filter((item) => item.key !== row.key))
-                      }
-                    >
-                      <Trash2Icon />
-                    </Button>
-                  </div>
+                        {row.id === null && <Badge tone="info">새 문장</Badge>}
+                        {row.outdated && <Badge tone="warning">낡음</Badge>}
+                        {row.source === 'console' && <Badge tone="outline">콘솔 등록</Badge>}
 
-                  <Textarea
-                    value={row.text}
-                    aria-invalid={isInvalid || undefined}
-                    placeholder="사용자가 이렇게 물어보면 이 문서가 걸려야 한다 — 그 질문을 씁니다"
-                    className="min-h-14 text-sm"
-                    onChange={(event) =>
-                      setRows((current) =>
-                        current.map((item) =>
-                          item.key === row.key ? { ...item, text: event.target.value } : item,
-                        ),
-                      )
-                    }
-                  />
-                </li>
-              );
-            })}
-          </ul>
+                        <span
+                          className={cn(
+                            'ml-auto text-xs tabular-nums',
+                            isInvalid ? 'text-destructive' : 'text-muted-foreground',
+                          )}
+                        >
+                          {length}/{SENTENCE_TEXT_MAX}
+                        </span>
 
-          <div className="mt-3 flex flex-wrap gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => addRow()}
-              disabled={rows.length >= SENTENCE_MAX_PER_DOC}
-            >
-              <PlusIcon />
-              질문 쿼리 추가
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleDraft}
-              disabled={isDrafting || rows.length >= SENTENCE_MAX_PER_DOC}
-            >
-              {isDrafting ? <Spinner className="size-3.5" /> : <SparklesIcon />}
-              LLM 초안 생성
-            </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          aria-label={`${index + 1}번 문장 삭제`}
+                          onClick={() =>
+                            setRows((current) => current.filter((item) => item.key !== row.key))
+                          }
+                        >
+                          <Trash2Icon />
+                        </Button>
+                      </div>
+
+                      {/* 내용만큼 늘어난다 — 미지원 브라우저에서는 min-h가 받는다. */}
+                      <Textarea
+                        value={row.text}
+                        aria-invalid={isInvalid || undefined}
+                        placeholder="사용자가 이렇게 물어보면 이 문서가 걸려야 한다 — 그 질문을 씁니다"
+                        className="field-sizing-content min-h-14 text-sm"
+                        onChange={(event) =>
+                          setRows((current) =>
+                            current.map((item) =>
+                              item.key === row.key ? { ...item, text: event.target.value } : item,
+                            ),
+                          )
+                        }
+                      />
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => addRow()}
+                  disabled={rows.length >= SENTENCE_MAX_PER_DOC}
+                >
+                  <PlusIcon />
+                  질문 쿼리 추가
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleDraft}
+                  disabled={isDrafting || rows.length >= SENTENCE_MAX_PER_DOC}
+                >
+                  {isDrafting ? <Spinner className="size-3.5" /> : <SparklesIcon />}
+                  LLM 초안 생성
+                </Button>
+              </div>
+            </section>
           </div>
         </>
       )}
