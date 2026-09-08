@@ -1,11 +1,26 @@
 import { env } from '@/lib/env';
 
-/** Spring 기본 에러 응답 형식 */
+/** FastAPI 기본 에러 응답 형식. detail은 문자열이거나 검증 오류 배열이다. */
 export type ApiErrorBody = {
+  detail?: string | { msg?: string; loc?: (string | number)[] }[];
   status?: number;
   error?: string;
   message?: string;
 };
+
+/** 서버가 준 에러 본문에서 사람이 읽을 문장 하나를 뽑는다. */
+function readDetail(body: ApiErrorBody | null): string | null {
+  if (!body) return null;
+
+  if (typeof body.detail === 'string') return body.detail;
+
+  if (Array.isArray(body.detail)) {
+    const messages = body.detail.map((item) => item.msg).filter(Boolean);
+    if (messages.length > 0) return messages.join(' / ');
+  }
+
+  return body.message ?? null;
+}
 
 /** 서버가 2xx 이외의 상태로 응답했을 때 던진다. */
 export class ApiError extends Error {
@@ -56,7 +71,7 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
   if (!response.ok) {
     const body = await readJson<ApiErrorBody>(response);
     throw new ApiError(
-      body?.message ?? `요청에 실패했습니다 (HTTP ${response.status})`,
+      readDetail(body) ?? `요청에 실패했습니다 (HTTP ${response.status})`,
       response.status,
       body,
     );
@@ -73,11 +88,17 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
 /** 에러 객체를 화면에 그대로 띄울 수 있는 한국어 문장으로 바꾼다. */
 export function toUserMessage(error: unknown): string {
   if (error instanceof ApiError) {
-    if (error.status === 400) {
-      return '질문 내용을 입력해 주세요.';
+    if (error.status === 404) {
+      return error.message || '대상을 찾지 못했습니다.';
+    }
+    if (error.status === 409) {
+      return error.message || '채점 대상이 아닌 요청입니다.';
+    }
+    if (error.status === 502) {
+      return error.message || '판정자 LLM 호출에 실패했습니다. 잠시 후 다시 시도해 주세요.';
     }
     if (error.status >= 500) {
-      return 'AI 서버에서 답변을 받지 못했습니다. 잠시 후 다시 시도해 주세요.';
+      return '서버에서 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.';
     }
     return error.message;
   }

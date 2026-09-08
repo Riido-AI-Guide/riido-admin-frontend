@@ -1,15 +1,33 @@
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 
-import Home from '@/pages/Home';
+import ConsoleLayout from '@/components/layout/ConsoleLayout';
+import { ToastProvider } from '@/components/ui/toaster';
+import DocumentsPage from '@/pages/DocumentsPage';
+import EvaluationsPage from '@/pages/EvaluationsPage';
+import QnaLogsPage from '@/pages/QnaLogsPage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="*" element={<div>페이지를 찾을 수 없습니다</div>} />
-      </Routes>
-    </BrowserRouter>
+    <ToastProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<ConsoleLayout />}>
+            <Route path="/" element={<Navigate to="/documents" replace />} />
+            <Route path="/documents" element={<DocumentsPage />} />
+            <Route path="/evaluations" element={<EvaluationsPage />} />
+            <Route path="/qna" element={<QnaLogsPage />} />
+          </Route>
+          <Route
+            path="*"
+            element={
+              <div className="flex h-screen items-center justify-center text-sm">
+                페이지를 찾을 수 없습니다
+              </div>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </ToastProvider>
   );
 }
 
