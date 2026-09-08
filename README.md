@@ -68,12 +68,17 @@ VITE_API_BASE_URL=http://127.0.0.1:8000
 
 | 화면 | 경로 | 쓰는 API |
 |---|---|---|
-| 공통 세그먼트 바 | 모든 화면 | `GET /api/v1/health` — 테이블 행 수로 세그먼트별 항목 수를 표시 |
+| 공통 세그먼트 바 | 모든 화면 | `GET /api/v1/health` — 테이블 행 수(피드백은 `backend.rows`)로 세그먼트별 항목 수를 표시 |
 | 근거 문서·질문 쿼리 | `/documents` | `GET /answer-units`, `GET /answer-units/{doc_id}`, `GET·PUT /search-units/coverage/{doc_id}`, `POST /search-units/draft`, `GET /index-status` |
 | 평가 | `/evaluations` | `GET /evaluations`, `GET·POST /evaluations/{qna_uuid}` |
 | 질의응답 로그 | `/qna` | `GET /qna`, `POST /evaluations/{qna_uuid}`, `POST /evaluations/run` |
+| 사용자 피드백 | `/feedback` | `GET /feedback`, `GET /feedback/{qna_uuid}`, `GET /feedback/stats` |
 
 목록의 필터·페이지·열린 단건은 모두 주소(쿼리스트링)에 남아, 링크를 그대로 공유할 수 있습니다.
+
+사용자 피드백은 백엔드 스키마(`app.message_feedbacks`)를 읽습니다. 그 스키마에 닿지
+못하면 이 화면만 503이 되고 나머지는 정상이라, `/health`의 `status`에도 반영되지
+않습니다. 세그먼트 바가 그 사실을 따로 알려줍니다.
 
 질문 쿼리 저장은 **전체 교체**입니다(`PUT /search-units/coverage/{doc_id}`).
 화면에 남아 있는 목록을 그대로 보내므로 추가·수정·삭제가 저장 한 번으로 끝나고,

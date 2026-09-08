@@ -13,8 +13,8 @@ import { cn } from '@/lib/utils';
 type Segment = {
   to: string;
   label: string;
-  /** 이 세그먼트의 항목 수를 세는 테이블 */
-  table: string;
+  /** 이 세그먼트의 항목 수를 세는 테이블. 'backend'는 백엔드 스키마 쪽 수치다 */
+  table: string | 'backend';
   /** 곁들여 보여줄 보조 수치 */
   extra?: { label: string; table: string };
 };
@@ -28,6 +28,7 @@ const SEGMENTS: Segment[] = [
   },
   { to: '/evaluations', label: '평가', table: 'answer_evaluations' },
   { to: '/qna', label: '질의응답 로그', table: 'qna_logs' },
+  { to: '/feedback', label: '사용자 피드백', table: 'backend' },
 ];
 
 const STATUS_STYLES: Record<HealthResponse['status'], string> = {
@@ -82,7 +83,10 @@ export default function ConsoleLayout() {
           <nav className="mx-auto max-w-7xl px-6 pb-3">
             <ul className="flex flex-wrap gap-2">
               {SEGMENTS.map((segment) => {
-                const count = tableRows(health, segment.table);
+                const count =
+                  segment.table === 'backend'
+                    ? (health?.backend?.rows ?? null)
+                    : tableRows(health, segment.table);
                 const extraCount = segment.extra ? tableRows(health, segment.extra.table) : null;
 
                 return (
@@ -116,6 +120,12 @@ export default function ConsoleLayout() {
               })}
             </ul>
 
+            {health?.backend && !health.backend.available && (
+              <p className="text-muted-foreground mt-2 text-xs">
+                백엔드 스키마({health.backend.table})에 닿지 못해 사용자 피드백만 조회할 수
+                없습니다. 나머지 화면은 정상입니다.
+              </p>
+            )}
             {health?.hint && <p className="text-muted-foreground mt-2 text-xs">{health.hint}</p>}
             {error && <p className="text-destructive mt-2 text-xs">{error}</p>}
           </nav>

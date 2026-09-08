@@ -1,5 +1,6 @@
 import { request } from '@/api/client';
 import type {
+  AgreementStat,
   AnswerEvaluationOut,
   AnswerUnitDetail,
   AnswerUnitListItem,
@@ -7,6 +8,8 @@ import type {
   DocSentenceSet,
   EvaluationRunRequest,
   EvaluationRunResponse,
+  FeedbackDetail,
+  FeedbackOut,
   HealthResponse,
   IndexStatus,
   Page,
@@ -156,4 +159,28 @@ export type QnaListParams = {
 
 export function listQna(params: QnaListParams = {}) {
   return request<Page<QnaLogOut>>(`/api/v1/qna${toQuery({ ...params })}`);
+}
+
+/* ── 사용자 피드백 ─────────────────────────────────────── */
+
+export type FeedbackListParams = {
+  rating?: string;
+  reason?: string;
+  agreement?: string;
+  q?: string;
+  limit?: number;
+  offset?: number;
+};
+
+export function listFeedback(params: FeedbackListParams = {}) {
+  return request<Page<FeedbackOut>>(`/api/v1/feedback${toQuery({ ...params })}`);
+}
+
+/** 피드백이 없는 턴이면 404다. 채점 결과만 볼 때는 getEvaluation을 쓴다. */
+export function getFeedback(qnaUuid: string) {
+  return request<FeedbackDetail>(`/api/v1/feedback/${encodeURIComponent(qnaUuid)}`);
+}
+
+export function getFeedbackStats() {
+  return request<AgreementStat[]>('/api/v1/feedback/stats');
 }

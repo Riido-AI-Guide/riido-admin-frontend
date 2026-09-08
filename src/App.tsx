@@ -4,6 +4,7 @@ import ConsoleLayout from '@/components/layout/ConsoleLayout';
 import { ToastProvider } from '@/components/ui/toaster';
 import DocumentsPage from '@/pages/DocumentsPage';
 import EvaluationsPage from '@/pages/EvaluationsPage';
+import FeedbackPage from '@/pages/FeedbackPage';
 import QnaLogsPage from '@/pages/QnaLogsPage';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route path="/documents" element={<DocumentsPage />} />
             <Route path="/evaluations" element={<EvaluationsPage />} />
             <Route path="/qna" element={<QnaLogsPage />} />
+            <Route path="/feedback" element={<FeedbackPage />} />
           </Route>
           <Route
             path="*"
