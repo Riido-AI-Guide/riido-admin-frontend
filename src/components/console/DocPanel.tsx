@@ -5,9 +5,8 @@ import {
   SaveIcon,
   SparklesIcon,
   Trash2Icon,
-  XIcon,
 } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { toUserMessage } from '@/api/client';
 import { draftSentences, getAnswerUnit, getDocCoverage, saveDocSentences } from '@/api/console';
@@ -25,6 +24,7 @@ import {
   VIEW_TYPES,
   VIEW_TYPE_LABELS,
 } from '@/api/types';
+import { Drawer } from '@/components/console/Drawer';
 import { ErrorBlock, LoadingBlock } from '@/components/console/StateBlock';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -141,14 +141,6 @@ export function DocPanel({ docId, onClose, onSaved }: DocPanelProps) {
     [rows],
   );
 
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onClose]);
-
   const addRow = useCallback(
     (view_type: ViewType = 'hypo_q', text = '') => {
       setRows((current) => [...current, { key: nextKey(), id: null, view_type, text }]);
@@ -212,215 +204,205 @@ export function DocPanel({ docId, onClose, onSaved }: DocPanelProps) {
 
   const detail = data?.detail;
   const coverage = data?.coverage;
+  const isReady = !resource.isInitialLoading && !resource.error;
 
   return (
-    <>
-      <div
-        className="animate-in fade-in-0 fixed inset-0 z-40 bg-black/10 backdrop-blur-[1px]"
-        onClick={onClose}
-        aria-hidden
-      />
-      <aside
-        className="bg-background animate-in slide-in-from-right-4 fade-in-0 fixed inset-y-0 right-0 z-50 flex w-full max-w-xl flex-col border-l shadow-xl duration-150"
-        role="dialog"
-        aria-label="근거 문서 상세"
-      >
-        <header className="flex items-start justify-between gap-3 border-b px-5 py-4">
-          <div className="min-w-0">
-            <p className="text-muted-foreground truncate font-mono text-xs">{docId}</p>
-            <h2 className="truncate text-sm font-semibold">{detail?.title ?? '불러오는 중…'}</h2>
-            {detail && (
-              <p className="text-muted-foreground truncate text-xs">
-                {detail.section}
-                {detail.url && (
-                  <a
-                    href={detail.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="ml-2 inline-flex items-center gap-0.5 underline underline-offset-2"
-                  >
-                    원문 <ExternalLinkIcon className="size-3" />
-                  </a>
-                )}
-              </p>
+    <Drawer
+      label="근거 문서 상세"
+      onClose={onClose}
+      header={
+        <>
+          <p className="text-muted-foreground truncate font-mono text-xs">{docId}</p>
+          <h2 className="truncate text-sm font-semibold">{detail?.title ?? '불러오는 중…'}</h2>
+          {detail && (
+            <p className="text-muted-foreground truncate text-xs">
+              {detail.section}
+              {detail.url && (
+                <a
+                  href={detail.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ml-2 inline-flex items-center gap-0.5 underline underline-offset-2"
+                >
+                  원문 <ExternalLinkIcon className="size-3" />
+                </a>
+              )}
+            </p>
+          )}
+        </>
+      }
+      footer={
+        isReady && (
+          <>
+            <p className="text-muted-foreground text-xs">
+              {isDirty ? '저장하지 않은 변경이 있습니다.' : '변경 사항 없음'}
+            </p>
+            <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={!isDirty || isSaving}
+                onClick={() => setDraft(null)}
+              >
+                <RotateCcwIcon />
+                되돌리기
+              </Button>
+              <Button size="sm" disabled={!isDirty || isSaving} onClick={handleSave}>
+                {isSaving ? <Spinner className="size-3.5" /> : <SaveIcon />}
+                저장
+              </Button>
+            </div>
+          </>
+        )
+      }
+    >
+      {resource.isInitialLoading ? (
+        <LoadingBlock />
+      ) : resource.error ? (
+        <ErrorBlock message={resource.error} onRetry={resource.reload} />
+      ) : (
+        <>
+          <div className="mb-4 flex flex-wrap items-center gap-2">
+            {coverage && (
+              <Badge tone={STATUS_TONE[coverage.status]}>{STATUS_LABEL[coverage.status]}</Badge>
+            )}
+            <Badge tone="outline">질문 쿼리 {rows.length}건</Badge>
+            {coverage?.outdated ? (
+              <Badge tone="warning">낡은 문장 {coverage.outdated}건</Badge>
+            ) : null}
+            {coverage?.content_updated_at && (
+              <span className="text-muted-foreground text-xs">
+                본문 수정 {formatDateTime(coverage.content_updated_at)}
+              </span>
             )}
           </div>
-          <Button variant="ghost" size="icon-sm" onClick={onClose} aria-label="닫기">
-            <XIcon />
-          </Button>
-        </header>
 
-        {resource.isInitialLoading ? (
-          <LoadingBlock />
-        ) : resource.error ? (
-          <ErrorBlock message={resource.error} onRetry={resource.reload} />
-        ) : (
-          <>
-            <div className="flex-1 overflow-y-auto px-5 py-4">
-              <div className="mb-4 flex flex-wrap items-center gap-2">
-                {coverage && (
-                  <Badge tone={STATUS_TONE[coverage.status]}>{STATUS_LABEL[coverage.status]}</Badge>
-                )}
-                <Badge tone="outline">질문 쿼리 {rows.length}건</Badge>
-                {coverage?.outdated ? (
-                  <Badge tone="warning">낡은 문장 {coverage.outdated}건</Badge>
-                ) : null}
-                {coverage?.content_updated_at && (
-                  <span className="text-muted-foreground text-xs">
-                    본문 수정 {formatDateTime(coverage.content_updated_at)}
-                  </span>
-                )}
-              </div>
+          {detail?.content && (
+            <div className="mb-4">
+              <Button variant="ghost" size="xs" onClick={() => setShowContent((v) => !v)}>
+                {showContent ? '본문 접기' : '본문 보기'}
+              </Button>
+              {showContent && (
+                <pre className="bg-muted/60 mt-2 max-h-64 overflow-y-auto rounded-lg p-3 text-xs leading-relaxed whitespace-pre-wrap">
+                  {detail.content}
+                </pre>
+              )}
+            </div>
+          )}
 
-              {detail?.content && (
-                <div className="mb-4">
-                  <Button variant="ghost" size="xs" onClick={() => setShowContent((v) => !v)}>
-                    {showContent ? '본문 접기' : '본문 보기'}
-                  </Button>
-                  {showContent && (
-                    <pre className="bg-muted/60 mt-2 max-h-64 overflow-y-auto rounded-lg p-3 text-xs leading-relaxed whitespace-pre-wrap">
-                      {detail.content}
-                    </pre>
+          <div className="mb-2 flex items-center justify-between">
+            <h3 className="text-sm font-medium">질문 쿼리</h3>
+            <span className="text-muted-foreground text-xs tabular-nums">
+              {rows.length} / {SENTENCE_MAX_PER_DOC}
+            </span>
+          </div>
+
+          {rows.length === 0 && (
+            <p className="text-muted-foreground border-border mb-3 rounded-lg border border-dashed px-3 py-6 text-center text-xs">
+              등록된 질문 쿼리가 없습니다. 이 문서는 벡터 검색에서 걸리지 않습니다.
+            </p>
+          )}
+
+          <ul className="flex flex-col gap-2">
+            {rows.map((row, index) => {
+              const length = row.text.trim().length;
+              const isInvalid = length < SENTENCE_TEXT_MIN || length > SENTENCE_TEXT_MAX;
+
+              return (
+                <li
+                  key={row.key}
+                  className={cn(
+                    'rounded-lg border p-2',
+                    row.outdated ? 'border-amber-600/40 bg-amber-500/5' : 'border-border',
                   )}
-                </div>
-              )}
+                >
+                  <div className="mb-1.5 flex items-center gap-2">
+                    <NativeSelect
+                      className="h-7 w-32 text-xs"
+                      value={row.view_type}
+                      aria-label={`${index + 1}번 문장 유형`}
+                      onChange={(event) =>
+                        setRows((current) =>
+                          current.map((item) =>
+                            item.key === row.key
+                              ? { ...item, view_type: asViewType(event.target.value) }
+                              : item,
+                          ),
+                        )
+                      }
+                    >
+                      {VIEW_TYPES.map((type) => (
+                        <option key={type} value={type}>
+                          {VIEW_TYPE_LABELS[type]}
+                        </option>
+                      ))}
+                    </NativeSelect>
 
-              <div className="mb-2 flex items-center justify-between">
-                <h3 className="text-sm font-medium">질문 쿼리</h3>
-                <span className="text-muted-foreground text-xs tabular-nums">
-                  {rows.length} / {SENTENCE_MAX_PER_DOC}
-                </span>
-              </div>
+                    {row.id === null && <Badge tone="info">새 문장</Badge>}
+                    {row.outdated && <Badge tone="warning">낡음</Badge>}
+                    {row.source === 'console' && <Badge tone="outline">콘솔 등록</Badge>}
 
-              {rows.length === 0 && (
-                <p className="text-muted-foreground border-border mb-3 rounded-lg border border-dashed px-3 py-6 text-center text-xs">
-                  등록된 질문 쿼리가 없습니다. 이 문서는 벡터 검색에서 걸리지 않습니다.
-                </p>
-              )}
-
-              <ul className="flex flex-col gap-2">
-                {rows.map((row, index) => {
-                  const length = row.text.trim().length;
-                  const isInvalid = length < SENTENCE_TEXT_MIN || length > SENTENCE_TEXT_MAX;
-
-                  return (
-                    <li
-                      key={row.key}
+                    <span
                       className={cn(
-                        'rounded-lg border p-2',
-                        row.outdated ? 'border-amber-600/40 bg-amber-500/5' : 'border-border',
+                        'ml-auto text-xs tabular-nums',
+                        isInvalid ? 'text-destructive' : 'text-muted-foreground',
                       )}
                     >
-                      <div className="mb-1.5 flex items-center gap-2">
-                        <NativeSelect
-                          className="h-7 w-32 text-xs"
-                          value={row.view_type}
-                          aria-label={`${index + 1}번 문장 유형`}
-                          onChange={(event) =>
-                            setRows((current) =>
-                              current.map((item) =>
-                                item.key === row.key
-                                  ? { ...item, view_type: asViewType(event.target.value) }
-                                  : item,
-                              ),
-                            )
-                          }
-                        >
-                          {VIEW_TYPES.map((type) => (
-                            <option key={type} value={type}>
-                              {VIEW_TYPE_LABELS[type]}
-                            </option>
-                          ))}
-                        </NativeSelect>
+                      {length}/{SENTENCE_TEXT_MAX}
+                    </span>
 
-                        {row.id === null && <Badge tone="info">새 문장</Badge>}
-                        {row.outdated && <Badge tone="warning">낡음</Badge>}
-                        {row.source === 'console' && <Badge tone="outline">콘솔 등록</Badge>}
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      aria-label={`${index + 1}번 문장 삭제`}
+                      onClick={() =>
+                        setRows((current) => current.filter((item) => item.key !== row.key))
+                      }
+                    >
+                      <Trash2Icon />
+                    </Button>
+                  </div>
 
-                        <span
-                          className={cn(
-                            'ml-auto text-xs tabular-nums',
-                            isInvalid ? 'text-destructive' : 'text-muted-foreground',
-                          )}
-                        >
-                          {length}/{SENTENCE_TEXT_MAX}
-                        </span>
+                  <Textarea
+                    value={row.text}
+                    aria-invalid={isInvalid || undefined}
+                    placeholder="사용자가 이렇게 물어보면 이 문서가 걸려야 한다 — 그 질문을 씁니다"
+                    className="min-h-14 text-sm"
+                    onChange={(event) =>
+                      setRows((current) =>
+                        current.map((item) =>
+                          item.key === row.key ? { ...item, text: event.target.value } : item,
+                        ),
+                      )
+                    }
+                  />
+                </li>
+              );
+            })}
+          </ul>
 
-                        <Button
-                          variant="ghost"
-                          size="icon-xs"
-                          aria-label={`${index + 1}번 문장 삭제`}
-                          onClick={() =>
-                            setRows((current) => current.filter((item) => item.key !== row.key))
-                          }
-                        >
-                          <Trash2Icon />
-                        </Button>
-                      </div>
-
-                      <Textarea
-                        value={row.text}
-                        aria-invalid={isInvalid || undefined}
-                        placeholder="사용자가 이렇게 물어보면 이 문서가 걸려야 한다 — 그 질문을 씁니다"
-                        className="min-h-14 text-sm"
-                        onChange={(event) =>
-                          setRows((current) =>
-                            current.map((item) =>
-                              item.key === row.key ? { ...item, text: event.target.value } : item,
-                            ),
-                          )
-                        }
-                      />
-                    </li>
-                  );
-                })}
-              </ul>
-
-              <div className="mt-3 flex flex-wrap gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addRow()}
-                  disabled={rows.length >= SENTENCE_MAX_PER_DOC}
-                >
-                  <PlusIcon />
-                  질문 쿼리 추가
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleDraft}
-                  disabled={isDrafting || rows.length >= SENTENCE_MAX_PER_DOC}
-                >
-                  {isDrafting ? <Spinner className="size-3.5" /> : <SparklesIcon />}
-                  LLM 초안 생성
-                </Button>
-              </div>
-            </div>
-
-            <footer className="flex items-center justify-between gap-3 border-t px-5 py-3">
-              <p className="text-muted-foreground text-xs">
-                {isDirty ? '저장하지 않은 변경이 있습니다.' : '변경 사항 없음'}
-              </p>
-              <div className="flex gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  disabled={!isDirty || isSaving}
-                  onClick={() => setDraft(null)}
-                >
-                  <RotateCcwIcon />
-                  되돌리기
-                </Button>
-                <Button size="sm" disabled={!isDirty || isSaving} onClick={handleSave}>
-                  {isSaving ? <Spinner className="size-3.5" /> : <SaveIcon />}
-                  저장
-                </Button>
-              </div>
-            </footer>
-          </>
-        )}
-      </aside>
-    </>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => addRow()}
+              disabled={rows.length >= SENTENCE_MAX_PER_DOC}
+            >
+              <PlusIcon />
+              질문 쿼리 추가
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleDraft}
+              disabled={isDrafting || rows.length >= SENTENCE_MAX_PER_DOC}
+            >
+              {isDrafting ? <Spinner className="size-3.5" /> : <SparklesIcon />}
+              LLM 초안 생성
+            </Button>
+          </div>
+        </>
+      )}
+    </Drawer>
   );
 }
