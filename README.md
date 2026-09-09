@@ -2,6 +2,9 @@
 
 뤼이도 AI 가이드 운영콘솔 - 관리자용 프론트엔드
 
+RAG 챗봇의 근거 문서·질문 쿼리·답변 평가·질의응답 로그를 다루는 운영 화면입니다.
+백엔드는 FastAPI이고, 스펙은 http://127.0.0.1:8000/docs 에서 볼 수 있습니다.
+
 ## 기술 스택
 
 React 19 · TypeScript · Vite · Tailwind CSS 4 · Base UI (shadcn/ui)
@@ -25,12 +28,14 @@ npm run dev
 프로젝트 루트에 `.env` 파일을 만들고 아래를 채웁니다.
 
 ```
-VITE_API_BASE_URL=http://localhost:8080
+VITE_API_BASE_URL=http://127.0.0.1:8000
 ```
 
 | 키 | 설명 |
 |---|---|
-| `VITE_API_BASE_URL` | 백엔드 API 주소 |
+| `VITE_API_BASE_URL` | 백엔드(FastAPI) API 주소 |
+
+`.env`를 고친 뒤에는 개발 서버를 다시 띄워야 반영됩니다.
 
 `VITE_` 접두사가 붙은 값만 브라우저 코드에 노출됩니다.
 빌드 결과물에 그대로 포함되므로 비밀 값은 넣지 않습니다.
@@ -59,14 +64,38 @@ VITE_API_BASE_URL=http://localhost:8080
 | `npm run format:check` | 포맷 검사 |
 | `npm run type-check` | 타입 검사 |
 
+## 화면 구성
+
+| 화면 | 경로 | 쓰는 API |
+|---|---|---|
+| 공통 세그먼트 바 | 모든 화면 | `GET /api/v1/health` — 테이블 행 수(피드백은 `backend.rows`)로 세그먼트별 항목 수를 표시 |
+| 근거 문서·질문 쿼리 | `/documents` | `GET /answer-units`, `GET /answer-units/{doc_id}`, `GET·PUT /search-units/coverage/{doc_id}`, `POST /search-units/draft`, `GET /index-status` |
+| 평가 | `/evaluations` | `GET /evaluations`, `GET·POST /evaluations/{qna_uuid}` |
+| 질의응답 로그 | `/qna` | `GET /qna`, `POST /evaluations/{qna_uuid}`, `POST /evaluations/run` |
+| 사용자 피드백 | `/feedback` | `GET /feedback`, `GET /feedback/{qna_uuid}`, `GET /feedback/stats` |
+
+목록의 필터·페이지·열린 단건은 모두 주소(쿼리스트링)에 남아, 링크를 그대로 공유할 수 있습니다.
+
+사용자 피드백은 백엔드 스키마(`app.message_feedbacks`)를 읽습니다. 그 스키마에 닿지
+못하면 이 화면만 503이 되고 나머지는 정상이라, `/health`의 `status`에도 반영되지
+않습니다. 세그먼트 바가 그 사실을 따로 알려줍니다.
+
+질문 쿼리 저장은 **전체 교체**입니다(`PUT /search-units/coverage/{doc_id}`).
+화면에 남아 있는 목록을 그대로 보내므로 추가·수정·삭제가 저장 한 번으로 끝나고,
+빠진 문장은 서버에서 지워집니다.
+
 ## 폴더 구조
 
 ```
 src/
+├── api/           서버 타입(types.ts)과 엔드포인트(console.ts, client.ts)
 ├── components/
-│   ├── ui/        shadcn/ui 컴포넌트
-├── lib/           유틸리티 (cn, api 등)
-├── types/         타입 정의
+│   ├── console/   목록·패널 등 운영 화면 전용 컴포넌트
+│   ├── layout/    세그먼트 바가 있는 공통 레이아웃
+│   └── ui/        shadcn/ui 컴포넌트
+├── hooks/         useResource(단일 GET), useToast, useHealth 등
+├── lib/           유틸리티 (cn, 날짜 포맷)
+├── pages/         세그먼트별 화면
 ├── index.css      디자인 토큰
 ├── main.tsx
 └── App.tsx
