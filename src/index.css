@@ -2,13 +2,548 @@
 @import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
-@import '@fontsource-variable/geist';
 
 @custom-variant dark (&:is(.dark *));
 
+/* =========================================================================
+   1. Riido design tokens — Figma "스위그-1팀" Variables (2026-09-10 추출)
+      Light = :root, Dark = .dark
+      * Primitives(--mint-500 등)는 직접 쓰지 말고 Semantic(--primary-solid 등)을 통해서만 참조
+   ========================================================================= */
+:root {
+  /* ---- Color Primitives (72) ---- */
+  --mint-50: #f3fcfb;  --mint-75: #ebfaf8;  --mint-100: #e2f8f6; --mint-200: #c5f1ed;
+  --mint-300: #98e7df; --mint-400: #6adcd1; --mint-500: #29d6c5; --mint-600: #24b2a4;
+  --mint-700: #218c82; --mint-800: #1e6b64; --mint-900: #1b4b47; --mint-950: #132f2c;
+  --blue-50: #f2f6fd;  --blue-100: #e3edfc; --blue-200: #c6dafb; --blue-300: #9abef9;
+  --blue-400: #649cf7; --blue-500: #2c78f2; --blue-600: #1462e1; --blue-700: #1653b6;
+  --blue-800: #1a4589; --blue-900: #1a3561; --blue-950: #14243d;
+  --gray-0: #ffffff;   --gray-50: #f9fafb;  --gray-100: #f3f5f6; --gray-200: #e8ebed;
+  --gray-300: #d5d9dd; --gray-400: #b1b9be; --gray-500: #8b959c; --gray-600: #6b7780;
+  --gray-700: #4f5b63; --gray-800: #3a444b; --gray-900: #272f35; --gray-925: #1f262b;
+  --gray-950: #181d21; --gray-1000: #000000;
+  --success-50: #f0faf3;  --success-100: #dbf5e3; --success-200: #b6ecc6; --success-300: #86dfa1;
+  --success-400: #54d47a; --success-500: #2ac057; --success-600: #26a14b; --success-700: #22813f;
+  --success-800: #206535; --success-900: #1b4628; --success-950: #132a1a;
+  --warning-50: #fdf7ec;  --warning-100: #fcedd4; --warning-200: #fbdead; --warning-300: #f9cb7b;
+  --warning-400: #f9ba4d; --warning-500: #faa819; --warning-600: #e19209; --warning-700: #b4770e;
+  --warning-800: #8b5f13; --warning-900: #644816; --warning-950: #3f2f13; --warning-tint: #faf4eb;
+  --danger-50: #fdedee;   --danger-100: #fbdadd;  --danger-200: #f9b9be;  --danger-300: #f68d96;
+  --danger-400: #f46773;  --danger-500: #ec3c4b;  --danger-600: #e31c2d;  --danger-700: #ba1c29;
+  --danger-800: #921c26;  --danger-900: #691c22;  --danger-950: #40171a;  --danger-tint: #faebec;
+
+  /* ---------- Primary (Mint) ---------- */
+  --primary-solid: #29d6c5;          /* Mint/500 */
+  --primary-solid-strong: #24b2a4;   /* Mint/600 */
+  --primary-soft: #ebfaf8;           /* Mint/75 */
+  --primary-border: #98e7df;         /* Mint/300 */
+  --primary-text: #24b2a4;           /* Mint/600 */
+  --primary-soft-text: #218c82;      /* Mint/700 */
+  --primary-on-solid: #181d21;       /* Gray/950 */
+  /* ---------- Secondary (Blue) ---------- */
+  --secondary-text: #1462e1;         /* Blue/600 */
+  --secondary-solid: #2c78f2;        /* Blue/500 */
+  --secondary-on-solid: #ffffff;
+  --secondary-soft: #e3edfc;         /* Blue/100 */
+  --secondary-soft-text: #1653b6;    /* Blue/700 */
+  --secondary-border: #9abef9;       /* Blue/300 */
+  /* ---------- Text ---------- */
+  --text-strong: #181d21;            /* Gray/950 */
+  --text-primary: #272f35;           /* Gray/900 */
+  --text-secondary: #6b7780;         /* Gray/600 */
+  --text-tertiary: #b1b9be;          /* Gray/400 */
+  --text-disable: #d5d9dd;           /* Gray/300 */
+  --text-inverse: #ffffff;
+  --text-link: #1462e1;              /* Blue/600 */
+  --text-brand: #24b2a4;             /* Mint/600 */
+  --text-step-number: #ffffff;
+  /* ---------- Background ---------- */
+  --background-canvas: #ffffff;
+  --background-canvas-strong: #e8ebed; /* Gray/200 */
+  --background-surface: #f9fafb;     /* Gray/50 */
+  --background-surface-soft: #f3f5f6;/* Gray/100 */
+  --background-surface-strong: #e8ebed; /* Gray/200 */
+  --background-answer: #ffffff;
+  --background-inverse: #272f35;
+  --background-disable: #f3f5f6;
+  --background-glass: #b1b9be33;
+  --background-sidebar-scrollbar: #b1b9be;
+  --background-canvas-fade-solid: #f9fafb;
+  --background-canvas-fade-soft: #f9fafbd4;
+  --background-canvas-fade-transparent: #f9fafb00;
+  /* ---------- Fill ---------- */
+  --fill-hover: #3a444b14;           /* Gray/800 8% */
+  --fill-press: #3a444b1f;           /* Gray/800 12% */
+  --fill-hover-inverse: #ffffff14;
+  --fill-press-inverse: #ffffff1f;
+  --fill-neutral-strong: #f3f5f6;
+  --fill-question-preview: #f9fafb;
+  --fill-neutral: #f3f5f6;
+  --fill-surface-strong: #e8ebed;
+  --fill-disable: #f3f5f6;
+  --fill-inverse: #272f35;
+  --fill-dim: #00000066;              /* Gray/1000 40% */
+  /* ---------- Border ---------- */
+  --border-subtle: #f9fafb;
+  --border-default: #f3f5f6;
+  --border-neutral: #d5d9dd;
+  --border-strong: #d5d9dd;
+  --border-neutral-strong: #d5d9dd;
+  --border-disable: #e8ebed;
+  /* ---------- Button ---------- */
+  --button-primary: #24b2a4;
+  --button-strong: #181d21;
+  --button-surface: #f9fafb;
+  --button-neutral: #e8ebed;
+  --button-neutral-soft: #f3f5f6;
+  --button-inverse: #272f35;
+  --button-inverse-soft: #272f35;
+  /* ---------- Icon ---------- */
+  --icon-primary: #272f35;
+  --icon-secondary: #6b7780;
+  --icon-tertiary: #b1b9be;
+  --icon-disable: #b1b9be;
+  --icon-inverse: #ffffff;
+  --icon-bullet-marker: #272f35;
+  /* ---------- Status / Danger ---------- */
+  --status-danger-solid: #ec3c4b;
+  --status-danger-solid-hover: #ba1c29;   /* Danger/700 (button 섹션 렌더값은 #e31c2d=600이었음) */
+  --status-danger-text: #921c26;
+  --status-danger-soft: #faebec;
+  --status-danger-border: #f46773;
+  --status-danger-track: #fbdadd;
+  --status-danger-on-solid: #ffffff;
+  --status-danger-button-text: #ffffff;
+  --status-danger-soft-press: #fbdadd;
+  --status-danger-icon: #ec3c4b;
+  /* ---------- Status / Warning ---------- */
+  --status-warning-solid: #faa819;
+  --status-warning-solid-hover: #e19209;   /* Warning/600 */
+  --status-warning-text: #644816;
+  --status-warning-soft: #faf4eb;
+  --status-warning-border: #f9ba4d;
+  --status-warning-on-solid: #ffffff;
+  --status-warning-button-text: #ffffff;
+  --status-warning-soft-press: #fcedd4;
+  --status-warning-icon: #faa819;
+  /* ---------- Status / Success ---------- */
+  --status-success-solid: #2ac057;   /* Success/500 */
+  --status-success-text: #26a14b;    /* Success/600 */
+  --status-success-soft: #dbf5e3;    /* Success/100 */
+  --status-success-on-solid: #ffffff;
+
+  /* ---- shadcn 매핑 (shadcn 컴포넌트가 riido 색을 쓰도록 연결) ---- */
+  --background: var(--background-canvas);
+  --foreground: var(--text-primary);
+  --card: var(--background-answer);
+  --card-foreground: var(--text-primary);
+  --popover: var(--background-answer);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--button-primary);
+  --primary-foreground: var(--primary-on-solid);
+  --secondary: var(--button-neutral);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--fill-neutral);
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--button-neutral-soft);
+  --accent-foreground: var(--text-primary);
+  --destructive: var(--status-danger-solid);
+  --border: var(--border-neutral);
+  --input: var(--border-neutral);
+  --ring: var(--primary-solid);
+  --chart-1: var(--mint-500);
+  --chart-2: var(--blue-500);
+  --chart-3: var(--success-500);
+  --chart-4: var(--warning-500);
+  --chart-5: var(--danger-500);
+  --radius: 10px;
+
+  --sidebar: var(--background-surface);
+  --sidebar-foreground: var(--text-primary);
+  --sidebar-primary: var(--button-primary);
+  --sidebar-primary-foreground: var(--primary-on-solid);
+  --sidebar-accent: var(--fill-neutral-strong);
+  --sidebar-accent-foreground: var(--text-primary);
+  --sidebar-border: var(--border-default);
+  --sidebar-ring: var(--primary-solid);
+
+  /* ---- 답변 버블 팔레트 → riido 토큰으로 연결 (다크는 토큰이 알아서 바뀜) ---- */
+  --answer-shell: var(--fill-surface-strong);
+  --answer-card: var(--background-answer);
+  --answer-note: var(--fill-hover-inverse);
+  --answer-note-border: var(--gray-0);
+  --answer-inset: var(--background-answer);
+  --answer-inset-border: var(--border-disable);
+  --answer-chip: var(--fill-neutral);
+  --answer-chip-border: var(--border-disable);
+  --answer-marker: var(--icon-bullet-marker);
+  --answer-marker-fg: var(--text-step-number);
+  --answer-source: var(--text-secondary);
+  --answer-source-ring: var(--icon-bullet-marker);
+  --answer-popup: var(--background-inverse);
+  --answer-popup-row: var(--fill-hover-inverse);
+  --answer-popup-fg: var(--text-inverse);
+}
+
+.dark {
+  /* Primary */
+  --primary-solid: #29d6c5;
+  --primary-solid-strong: #24b2a4;
+  --primary-soft: #29d6c524;           /* Mint/500 14% */
+  --primary-border: #29d6c559;         /* Mint/500 35% */
+  --primary-text: #6adcd1;             /* Mint/400 */
+  --primary-soft-text: #98e7df;        /* Mint/300 */
+  --primary-on-solid: #181d21;
+  /* Secondary (Blue) */
+  --secondary-text: #649cf7;           /* Blue/400 */
+  --secondary-solid: #2c78f2;
+  --secondary-on-solid: #ffffff;
+  --secondary-soft: #2c78f229;         /* Blue/500 16% */
+  --secondary-soft-text: #9abef9;      /* Blue/300 */
+  --secondary-border: #2c78f259;       /* Blue/500 35% */
+  /* Text */
+  --text-strong: #ffffff;
+  --text-primary: #f3f5f6;
+  --text-secondary: #b1b9be;
+  --text-tertiary: #6b7780;
+  --text-disable: #4f5b63;
+  --text-inverse: #181d21;             /* Gray/950 */
+  --text-link: #649cf7;                /* Blue/400 */
+  --text-brand: #6adcd1;               /* Mint/400 */
+  --text-step-number: #272f35;
+  /* Background */
+  --background-canvas: #181d21;
+  --background-canvas-strong: #181d21; /* Gray/950 (canvas와 동일) */
+  --background-surface: #272f35;
+  --background-surface-soft: #272f35;
+  --background-surface-strong: #272f35;
+  --background-answer: #1f262b;
+  --background-inverse: #e8ebed;
+  --background-disable: #3a444b;
+  --background-glass: #272f3573;       /* Gray/900 45% */
+  --background-sidebar-scrollbar: #3a444b;
+  --background-canvas-fade-solid: #181d21;
+  --background-canvas-fade-soft: #181d21d4;
+  --background-canvas-fade-transparent: #181d2100;
+  /* Fill */
+  --fill-neutral: #272f35;             /* Gray/900 */
+  --fill-neutral-strong: #1f262b;      /* Gray/925 */
+  --fill-surface-strong: #272f35;
+  --fill-disable: #3a444b;             /* Gray/800 */
+  --fill-inverse: #e8ebed;             /* Gray/200 */
+  --fill-hover: #ffffff14;             /* Gray/0 8% */
+  --fill-press: #ffffff1f;             /* Gray/0 12% */
+  --fill-hover-inverse: #3a444b14;     /* Gray/800 8% */
+  --fill-press-inverse: #3a444b1f;     /* Gray/800 12% */
+  --fill-question-preview: #1f262b;
+  --fill-dim: #00000099;               /* Gray/1000 60% */
+  /* Border */
+  --border-subtle: #1f262b;            /* Gray/925 */
+  --border-default: #272f35;           /* Gray/900 */
+  --border-strong: #4f5b63;
+  --border-neutral: #4f5b63;           /* Gray/700 */
+  --border-neutral-strong: #3a444b;    /* Gray/800 */
+  --border-disable: #3a444b;
+  /* Button */
+  --button-primary: #29d6c5;           /* Mint/500 */
+  --button-strong: #f9fafb;            /* Gray/50 */
+  --button-surface: #1f262b;           /* Gray/925 */
+  --button-neutral: #272f35;           /* Gray/900 */
+  --button-neutral-soft: #3a444b;      /* Gray/800 */
+  --button-inverse: #e8ebed;           /* Gray/200 */
+  --button-inverse-soft: #f3f5f6;      /* Gray/100 */
+  /* Icon */
+  --icon-primary: #f3f5f6;             /* Gray/100 */
+  --icon-secondary: #b1b9be;           /* Gray/400 */
+  --icon-tertiary: #6b7780;            /* Gray/600 */
+  --icon-disable: #6b7780;
+  --icon-inverse: #181d21;             /* Gray/950 */
+  --icon-bullet-marker: #ffffff;
+  /* Status / Danger — 다크에선 대부분 Gray로 중화, 아이콘만 색 유지 */
+  --status-danger-solid: #3a444b;
+  --status-danger-solid-hover: #1f262b;
+  --status-danger-text: #f3f5f6;
+  --status-danger-button-text: #f3f5f6;
+  --status-danger-on-solid: #272f35;
+  --status-danger-soft: #272f35;
+  --status-danger-soft-press: #1f262b;
+  --status-danger-border: #3a444b;
+  --status-danger-track: #3a444b;
+  --status-danger-icon: #f46773;       /* Danger/400 */
+  /* Status / Warning */
+  --status-warning-solid: #3a444b;
+  --status-warning-solid-hover: #1f262b;
+  --status-warning-text: #f3f5f6;
+  --status-warning-button-text: #f3f5f6;
+  --status-warning-on-solid: #272f35;
+  --status-warning-soft: #272f35;
+  --status-warning-soft-press: #1f262b;
+  --status-warning-border: #3a444b;
+  --status-warning-icon: #f9ba4d;      /* Warning/400 */
+  /* Status / Success */
+  --status-success-solid: #2ac057;
+  --status-success-text: #54d47a;      /* Success/400 */
+  --status-success-soft: #2ac05729;    /* Success/500 16% */
+  --status-success-on-solid: #ffffff;
+  /* shadcn / answer 매핑은 :root의 var() 참조가 그대로 다크 값을 따라가므로 재정의 불필요.
+     단, 다크에서 값이 달라야 하는 것만 여기 추가 */
+  --answer-note-border: var(--border-neutral-strong);
+  --answer-popup: var(--gray-800);
+}
+
+/* =========================================================================
+   2. Tailwind 유틸리티 등록 (Tailwind v4 @theme)
+      --color-X  → bg-X / text-X / border-X …
+      --radius-X → rounded-X
+      --text-X   → text-X (font-size + line-height)
+      --shadow-X → shadow-X
+   ========================================================================= */
 @theme inline {
+  /* Font */
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-heading: var(--font-sans);
-  --font-sans: 'Geist Variable', 'Pretendard Variable', sans-serif;
+  --tracking-tight: -0.4px;
+  --tracking-normal: 0;
+  --tracking-wide: 0.4px;
+
+  /* Typography — Figma 텍스트 스타일 (font-weight는 font-medium 등으로 따로 지정) */
+  --text-welcome: 48px;        --text-welcome--line-height: 64px;   /* SemiBold, tracking-tight */
+  --text-title-20: 20px;       --text-title-20--line-height: 28px;  /* Normal=Medium, Strong=SemiBold, tight */
+  --text-title-18: 18px;       --text-title-18--line-height: 26px;  /* SemiBold, tight */
+  --text-title-16: 16px;       --text-title-16--line-height: 24px;  /* Medium, tight */
+  --text-body-24: 24px;        --text-body-24--line-height: 32px;   /* Regular */
+  --text-body-16: 16px;        --text-body-16--line-height: 24px;   /* Regular */
+  --text-body-16-reading: 16px; --text-body-16-reading--line-height: 28px;
+  --text-body-14: 14px;        --text-body-14--line-height: 20px;   /* Regular */
+  --text-caption-12: 12px;     --text-caption-12--line-height: 18px;/* Regular */
+  --text-button-16: 16px;      --text-button-16--line-height: 24px; /* Medium, tracking-wide */
+
+  /* Radius — Figma Radius 컬렉션 (rounded-10, rounded-12 …) */
+  --radius-4: 4px;
+  --radius-6: 6px;
+  --radius-10: 10px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+  --radius-24: 24px;
+  --radius-full: 999px;
+  /* shadcn 기본 스케일 유지 */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Elevation */
+  --shadow-s:  0 2px 4px -2px #181d210f, 0 4px 6px -1px #181d210f;
+  --shadow-m:  0 4px 6px -2px #181d2112, 0 10px 15px -3px #181d2112;
+  --shadow-l:  0 6px 10px -4px #181d2114, 0 16px 24px -6px #181d2114;
+  --shadow-xl: 0 10px 15px -5px #181d211a, 0 24px 38px -10px #181d211f;
+
+  /* Opacity */
+  --opacity-overlay: 0.08;
+  --opacity-scrim: 0.5;
+
+  /* ---- Riido semantic colors ---- */
+  --color-primary-solid: var(--primary-solid);
+  --color-primary-solid-strong: var(--primary-solid-strong);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-border: var(--primary-border);
+  --color-primary-text: var(--primary-text);
+  --color-primary-soft-text: var(--primary-soft-text);
+  --color-primary-on-solid: var(--primary-on-solid);
+  --color-secondary-text: var(--secondary-text);
+  --color-secondary-solid: var(--secondary-solid);
+  --color-secondary-on-solid: var(--secondary-on-solid);
+  --color-secondary-soft: var(--secondary-soft);
+  --color-secondary-soft-text: var(--secondary-soft-text);
+  --color-secondary-border: var(--secondary-border);
+  --color-text-strong: var(--text-strong);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-disable: var(--text-disable);
+  --color-text-inverse: var(--text-inverse);
+  --color-text-link: var(--text-link);
+  --color-text-brand: var(--text-brand);
+  --color-text-step-number: var(--text-step-number);
+  --color-background-canvas: var(--background-canvas);
+  --color-background-canvas-strong: var(--background-canvas-strong);
+  --color-background-surface: var(--background-surface);
+  --color-background-surface-soft: var(--background-surface-soft);
+  --color-background-surface-strong: var(--background-surface-strong);
+  --color-background-answer: var(--background-answer);
+  --color-background-inverse: var(--background-inverse);
+  --color-background-disable: var(--background-disable);
+  --color-background-glass: var(--background-glass);
+  --color-background-sidebar-scrollbar: var(--background-sidebar-scrollbar);
+  --color-background-canvas-fade-solid: var(--background-canvas-fade-solid);
+  --color-background-canvas-fade-soft: var(--background-canvas-fade-soft);
+  --color-background-canvas-fade-transparent: var(--background-canvas-fade-transparent);
+  --color-fill-hover: var(--fill-hover);
+  --color-fill-press: var(--fill-press);
+  --color-fill-hover-inverse: var(--fill-hover-inverse);
+  --color-fill-press-inverse: var(--fill-press-inverse);
+  --color-fill-neutral-strong: var(--fill-neutral-strong);
+  --color-fill-question-preview: var(--fill-question-preview);
+  --color-fill-neutral: var(--fill-neutral);
+  --color-fill-surface-strong: var(--fill-surface-strong);
+  --color-fill-disable: var(--fill-disable);
+  --color-fill-inverse: var(--fill-inverse);
+  --color-fill-dim: var(--fill-dim);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-border-neutral: var(--border-neutral);
+  --color-border-strong: var(--border-strong);
+  --color-border-neutral-strong: var(--border-neutral-strong);
+  --color-border-disable: var(--border-disable);
+  --color-button-primary: var(--button-primary);
+  --color-button-strong: var(--button-strong);
+  --color-button-surface: var(--button-surface);
+  --color-button-neutral: var(--button-neutral);
+  --color-button-neutral-soft: var(--button-neutral-soft);
+  --color-button-inverse: var(--button-inverse);
+  --color-button-inverse-soft: var(--button-inverse-soft);
+  --color-icon-primary: var(--icon-primary);
+  --color-icon-secondary: var(--icon-secondary);
+  --color-icon-tertiary: var(--icon-tertiary);
+  --color-icon-disable: var(--icon-disable);
+  --color-icon-inverse: var(--icon-inverse);
+  --color-icon-bullet-marker: var(--icon-bullet-marker);
+  --color-status-danger-solid: var(--status-danger-solid);
+  --color-status-danger-solid-hover: var(--status-danger-solid-hover);
+  --color-status-danger-text: var(--status-danger-text);
+  --color-status-danger-soft: var(--status-danger-soft);
+  --color-status-danger-border: var(--status-danger-border);
+  --color-status-danger-track: var(--status-danger-track);
+  --color-status-danger-on-solid: var(--status-danger-on-solid);
+  --color-status-danger-button-text: var(--status-danger-button-text);
+  --color-status-danger-soft-press: var(--status-danger-soft-press);
+  --color-status-danger-icon: var(--status-danger-icon);
+  --color-status-warning-solid: var(--status-warning-solid);
+  --color-status-warning-solid-hover: var(--status-warning-solid-hover);
+  --color-status-warning-text: var(--status-warning-text);
+  --color-status-warning-soft: var(--status-warning-soft);
+  --color-status-warning-border: var(--status-warning-border);
+  --color-status-warning-on-solid: var(--status-warning-on-solid);
+  --color-status-warning-button-text: var(--status-warning-button-text);
+  --color-status-warning-soft-press: var(--status-warning-soft-press);
+  --color-status-warning-icon: var(--status-warning-icon);
+  --color-status-success-solid: var(--status-success-solid);
+  --color-status-success-text: var(--status-success-text);
+  --color-status-success-soft: var(--status-success-soft);
+  --color-status-success-on-solid: var(--status-success-on-solid);
+
+  /* ---- Primitives (필요할 때만; 가급적 semantic 사용) ---- */
+  --color-mint-50: var(--mint-50);
+  --color-mint-75: var(--mint-75);
+  --color-mint-100: var(--mint-100);
+  --color-mint-200: var(--mint-200);
+  --color-mint-300: var(--mint-300);
+  --color-mint-400: var(--mint-400);
+  --color-mint-500: var(--mint-500);
+  --color-mint-600: var(--mint-600);
+  --color-mint-700: var(--mint-700);
+  --color-mint-800: var(--mint-800);
+  --color-mint-900: var(--mint-900);
+  --color-mint-950: var(--mint-950);
+  --color-blue-50: var(--blue-50);
+  --color-blue-100: var(--blue-100);
+  --color-blue-200: var(--blue-200);
+  --color-blue-300: var(--blue-300);
+  --color-blue-400: var(--blue-400);
+  --color-blue-500: var(--blue-500);
+  --color-blue-600: var(--blue-600);
+  --color-blue-700: var(--blue-700);
+  --color-blue-800: var(--blue-800);
+  --color-blue-900: var(--blue-900);
+  --color-blue-950: var(--blue-950);
+  --color-gray-0: var(--gray-0);
+  --color-gray-50: var(--gray-50);
+  --color-gray-100: var(--gray-100);
+  --color-gray-200: var(--gray-200);
+  --color-gray-300: var(--gray-300);
+  --color-gray-400: var(--gray-400);
+  --color-gray-500: var(--gray-500);
+  --color-gray-600: var(--gray-600);
+  --color-gray-700: var(--gray-700);
+  --color-gray-800: var(--gray-800);
+  --color-gray-900: var(--gray-900);
+  --color-gray-925: var(--gray-925);
+  --color-gray-950: var(--gray-950);
+  --color-gray-1000: var(--gray-1000);
+  --color-success-50: var(--success-50);
+  --color-success-100: var(--success-100);
+  --color-success-200: var(--success-200);
+  --color-success-300: var(--success-300);
+  --color-success-400: var(--success-400);
+  --color-success-500: var(--success-500);
+  --color-success-600: var(--success-600);
+  --color-success-700: var(--success-700);
+  --color-success-800: var(--success-800);
+  --color-success-900: var(--success-900);
+  --color-success-950: var(--success-950);
+  --color-warning-50: var(--warning-50);
+  --color-warning-100: var(--warning-100);
+  --color-warning-200: var(--warning-200);
+  --color-warning-300: var(--warning-300);
+  --color-warning-400: var(--warning-400);
+  --color-warning-500: var(--warning-500);
+  --color-warning-600: var(--warning-600);
+  --color-warning-700: var(--warning-700);
+  --color-warning-800: var(--warning-800);
+  --color-warning-900: var(--warning-900);
+  --color-warning-950: var(--warning-950);
+  --color-warning-tint: var(--warning-tint);
+  --color-danger-50: var(--danger-50);
+  --color-danger-100: var(--danger-100);
+  --color-danger-200: var(--danger-200);
+  --color-danger-300: var(--danger-300);
+  --color-danger-400: var(--danger-400);
+  --color-danger-500: var(--danger-500);
+  --color-danger-600: var(--danger-600);
+  --color-danger-700: var(--danger-700);
+  --color-danger-800: var(--danger-800);
+  --color-danger-900: var(--danger-900);
+  --color-danger-950: var(--danger-950);
+  --color-danger-tint: var(--danger-tint);
+
+  /* ---- shadcn ---- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ---- 답변 버블 ---- */
   --color-answer-shell: var(--answer-shell);
   --color-answer-card: var(--answer-card);
   --color-answer-note: var(--answer-note);
@@ -24,148 +559,6 @@
   --color-answer-popup: var(--answer-popup);
   --color-answer-popup-row: var(--answer-popup-row);
   --color-answer-popup-fg: var(--answer-popup-fg);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --color-foreground: var(--foreground);
-  --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-}
-
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-
-  /* 답변 버블 팔레트 — 피그마 시안 기준. 확정 색이 나오면 이 블록만 교체하면 된다. */
-  --answer-shell: #ececec;
-  --answer-card: #ffffff;
-  --answer-note: rgb(255 255 255 / 0.4);
-  --answer-note-border: #ffffff;
-  --answer-inset: #ffffff;
-  --answer-inset-border: #ececec;
-  --answer-chip: rgb(236 236 236 / 0.4);
-  --answer-chip-border: #ececec;
-  --answer-marker: #000000;
-  --answer-marker-fg: #ffffff;
-  --answer-source: #737373;
-  --answer-source-ring: #000000;
-  --answer-popup: rgb(90 90 90 / 0.95);
-  --answer-popup-row: rgb(255 255 255 / 0.14);
-  --answer-popup-fg: #ffffff;
-
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-
-  /* 다크는 아직 시안이 없다. 대비만 뒤집어 둔 임시값. */
-  --answer-shell: oklch(0.23 0 0);
-  --answer-card: oklch(0.17 0 0);
-  --answer-note: oklch(1 0 0 / 6%);
-  --answer-note-border: oklch(1 0 0 / 14%);
-  --answer-inset: oklch(0.17 0 0);
-  --answer-inset-border: oklch(1 0 0 / 12%);
-  --answer-chip: oklch(1 0 0 / 5%);
-  --answer-chip-border: oklch(1 0 0 / 12%);
-  --answer-marker: oklch(0.92 0 0);
-  --answer-marker-fg: oklch(0.17 0 0);
-  --answer-source: oklch(0.55 0 0);
-  --answer-source-ring: oklch(0.92 0 0);
-  --answer-popup: oklch(0.3 0 0 / 0.96);
-  --answer-popup-row: oklch(1 0 0 / 12%);
-  --answer-popup-fg: oklch(0.98 0 0);
 }
 
 @layer base {
