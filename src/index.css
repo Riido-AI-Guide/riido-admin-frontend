@@ -12,56 +12,109 @@
    ========================================================================= */
 :root {
   /* ---- Color Primitives (72) ---- */
-  --mint-50: #f3fcfb;  --mint-75: #ebfaf8;  --mint-100: #e2f8f6; --mint-200: #c5f1ed;
-  --mint-300: #98e7df; --mint-400: #6adcd1; --mint-500: #29d6c5; --mint-600: #24b2a4;
-  --mint-700: #218c82; --mint-800: #1e6b64; --mint-900: #1b4b47; --mint-950: #132f2c;
-  --blue-50: #f2f6fd;  --blue-100: #e3edfc; --blue-200: #c6dafb; --blue-300: #9abef9;
-  --blue-400: #649cf7; --blue-500: #2c78f2; --blue-600: #1462e1; --blue-700: #1653b6;
-  --blue-800: #1a4589; --blue-900: #1a3561; --blue-950: #14243d;
-  --gray-0: #ffffff;   --gray-50: #f9fafb;  --gray-100: #f3f5f6; --gray-200: #e8ebed;
-  --gray-300: #d5d9dd; --gray-400: #b1b9be; --gray-500: #8b959c; --gray-600: #6b7780;
-  --gray-700: #4f5b63; --gray-800: #3a444b; --gray-900: #272f35; --gray-925: #1f262b;
-  --gray-950: #181d21; --gray-1000: #000000;
-  --success-50: #f0faf3;  --success-100: #dbf5e3; --success-200: #b6ecc6; --success-300: #86dfa1;
-  --success-400: #54d47a; --success-500: #2ac057; --success-600: #26a14b; --success-700: #22813f;
-  --success-800: #206535; --success-900: #1b4628; --success-950: #132a1a;
-  --warning-50: #fdf7ec;  --warning-100: #fcedd4; --warning-200: #fbdead; --warning-300: #f9cb7b;
-  --warning-400: #f9ba4d; --warning-500: #faa819; --warning-600: #e19209; --warning-700: #b4770e;
-  --warning-800: #8b5f13; --warning-900: #644816; --warning-950: #3f2f13; --warning-tint: #faf4eb;
-  --danger-50: #fdedee;   --danger-100: #fbdadd;  --danger-200: #f9b9be;  --danger-300: #f68d96;
-  --danger-400: #f46773;  --danger-500: #ec3c4b;  --danger-600: #e31c2d;  --danger-700: #ba1c29;
-  --danger-800: #921c26;  --danger-900: #691c22;  --danger-950: #40171a;  --danger-tint: #faebec;
+  --mint-50: #f3fcfb;
+  --mint-75: #ebfaf8;
+  --mint-100: #e2f8f6;
+  --mint-200: #c5f1ed;
+  --mint-300: #98e7df;
+  --mint-400: #6adcd1;
+  --mint-500: #29d6c5;
+  --mint-600: #24b2a4;
+  --mint-700: #218c82;
+  --mint-800: #1e6b64;
+  --mint-900: #1b4b47;
+  --mint-950: #132f2c;
+  --blue-50: #f2f6fd;
+  --blue-100: #e3edfc;
+  --blue-200: #c6dafb;
+  --blue-300: #9abef9;
+  --blue-400: #649cf7;
+  --blue-500: #2c78f2;
+  --blue-600: #1462e1;
+  --blue-700: #1653b6;
+  --blue-800: #1a4589;
+  --blue-900: #1a3561;
+  --blue-950: #14243d;
+  --gray-0: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f5f6;
+  --gray-200: #e8ebed;
+  --gray-300: #d5d9dd;
+  --gray-400: #b1b9be;
+  --gray-500: #8b959c;
+  --gray-600: #6b7780;
+  --gray-700: #4f5b63;
+  --gray-800: #3a444b;
+  --gray-900: #272f35;
+  --gray-925: #1f262b;
+  --gray-950: #181d21;
+  --gray-1000: #000000;
+  --success-50: #f0faf3;
+  --success-100: #dbf5e3;
+  --success-200: #b6ecc6;
+  --success-300: #86dfa1;
+  --success-400: #54d47a;
+  --success-500: #2ac057;
+  --success-600: #26a14b;
+  --success-700: #22813f;
+  --success-800: #206535;
+  --success-900: #1b4628;
+  --success-950: #132a1a;
+  --warning-50: #fdf7ec;
+  --warning-100: #fcedd4;
+  --warning-200: #fbdead;
+  --warning-300: #f9cb7b;
+  --warning-400: #f9ba4d;
+  --warning-500: #faa819;
+  --warning-600: #e19209;
+  --warning-700: #b4770e;
+  --warning-800: #8b5f13;
+  --warning-900: #644816;
+  --warning-950: #3f2f13;
+  --warning-tint: #faf4eb;
+  --danger-50: #fdedee;
+  --danger-100: #fbdadd;
+  --danger-200: #f9b9be;
+  --danger-300: #f68d96;
+  --danger-400: #f46773;
+  --danger-500: #ec3c4b;
+  --danger-600: #e31c2d;
+  --danger-700: #ba1c29;
+  --danger-800: #921c26;
+  --danger-900: #691c22;
+  --danger-950: #40171a;
+  --danger-tint: #faebec;
 
   /* ---------- Primary (Mint) ---------- */
-  --primary-solid: #29d6c5;          /* Mint/500 */
-  --primary-solid-strong: #24b2a4;   /* Mint/600 */
-  --primary-soft: #ebfaf8;           /* Mint/75 */
-  --primary-border: #98e7df;         /* Mint/300 */
-  --primary-text: #24b2a4;           /* Mint/600 */
-  --primary-soft-text: #218c82;      /* Mint/700 */
-  --primary-on-solid: #181d21;       /* Gray/950 */
+  --primary-solid: #29d6c5; /* Mint/500 */
+  --primary-solid-strong: #24b2a4; /* Mint/600 */
+  --primary-soft: #ebfaf8; /* Mint/75 */
+  --primary-border: #98e7df; /* Mint/300 */
+  --primary-text: #24b2a4; /* Mint/600 */
+  --primary-soft-text: #218c82; /* Mint/700 */
+  --primary-on-solid: #181d21; /* Gray/950 */
   /* ---------- Secondary (Blue) ---------- */
-  --secondary-text: #1462e1;         /* Blue/600 */
-  --secondary-solid: #2c78f2;        /* Blue/500 */
+  --secondary-text: #1462e1; /* Blue/600 */
+  --secondary-solid: #2c78f2; /* Blue/500 */
   --secondary-on-solid: #ffffff;
-  --secondary-soft: #e3edfc;         /* Blue/100 */
-  --secondary-soft-text: #1653b6;    /* Blue/700 */
-  --secondary-border: #9abef9;       /* Blue/300 */
+  --secondary-soft: #e3edfc; /* Blue/100 */
+  --secondary-soft-text: #1653b6; /* Blue/700 */
+  --secondary-border: #9abef9; /* Blue/300 */
   /* ---------- Text ---------- */
-  --text-strong: #181d21;            /* Gray/950 */
-  --text-primary: #272f35;           /* Gray/900 */
-  --text-secondary: #6b7780;         /* Gray/600 */
-  --text-tertiary: #b1b9be;          /* Gray/400 */
-  --text-disable: #d5d9dd;           /* Gray/300 */
+  --text-strong: #181d21; /* Gray/950 */
+  --text-primary: #272f35; /* Gray/900 */
+  --text-secondary: #6b7780; /* Gray/600 */
+  --text-tertiary: #b1b9be; /* Gray/400 */
+  --text-disable: #d5d9dd; /* Gray/300 */
   --text-inverse: #ffffff;
-  --text-link: #1462e1;              /* Blue/600 */
-  --text-brand: #24b2a4;             /* Mint/600 */
+  --text-link: #1462e1; /* Blue/600 */
+  --text-brand: #24b2a4; /* Mint/600 */
   --text-step-number: #ffffff;
   /* ---------- Background ---------- */
   --background-canvas: #ffffff;
   --background-canvas-strong: #e8ebed; /* Gray/200 */
-  --background-surface: #f9fafb;     /* Gray/50 */
-  --background-surface-soft: #f3f5f6;/* Gray/100 */
+  --background-surface: #f9fafb; /* Gray/50 */
+  --background-surface-soft: #f3f5f6; /* Gray/100 */
   --background-surface-strong: #e8ebed; /* Gray/200 */
   --background-answer: #ffffff;
   --background-inverse: #272f35;
@@ -72,8 +125,8 @@
   --background-canvas-fade-soft: #f9fafbd4;
   --background-canvas-fade-transparent: #f9fafb00;
   /* ---------- Fill ---------- */
-  --fill-hover: #3a444b14;           /* Gray/800 8% */
-  --fill-press: #3a444b1f;           /* Gray/800 12% */
+  --fill-hover: #3a444b14; /* Gray/800 8% */
+  --fill-press: #3a444b1f; /* Gray/800 12% */
   --fill-hover-inverse: #ffffff14;
   --fill-press-inverse: #ffffff1f;
   --fill-neutral-strong: #f3f5f6;
@@ -82,7 +135,7 @@
   --fill-surface-strong: #e8ebed;
   --fill-disable: #f3f5f6;
   --fill-inverse: #272f35;
-  --fill-dim: #00000066;              /* Gray/1000 40% */
+  --fill-dim: #00000066; /* Gray/1000 40% */
   /* ---------- Border ---------- */
   --border-subtle: #f9fafb;
   --border-default: #f3f5f6;
@@ -107,7 +160,7 @@
   --icon-bullet-marker: #272f35;
   /* ---------- Status / Danger ---------- */
   --status-danger-solid: #ec3c4b;
-  --status-danger-solid-hover: #ba1c29;   /* Danger/700 (button 섹션 렌더값은 #e31c2d=600이었음) */
+  --status-danger-solid-hover: #ba1c29; /* Danger/700 (button 섹션 렌더값은 #e31c2d=600이었음) */
   --status-danger-text: #921c26;
   --status-danger-soft: #faebec;
   --status-danger-border: #f46773;
@@ -118,7 +171,7 @@
   --status-danger-icon: #ec3c4b;
   /* ---------- Status / Warning ---------- */
   --status-warning-solid: #faa819;
-  --status-warning-solid-hover: #e19209;   /* Warning/600 */
+  --status-warning-solid-hover: #e19209; /* Warning/600 */
   --status-warning-text: #644816;
   --status-warning-soft: #faf4eb;
   --status-warning-border: #f9ba4d;
@@ -127,9 +180,9 @@
   --status-warning-soft-press: #fcedd4;
   --status-warning-icon: #faa819;
   /* ---------- Status / Success ---------- */
-  --status-success-solid: #2ac057;   /* Success/500 */
-  --status-success-text: #26a14b;    /* Success/600 */
-  --status-success-soft: #dbf5e3;    /* Success/100 */
+  --status-success-solid: #2ac057; /* Success/500 */
+  --status-success-text: #26a14b; /* Success/600 */
+  --status-success-soft: #dbf5e3; /* Success/100 */
   --status-success-on-solid: #ffffff;
 
   /* ---- shadcn 매핑 (shadcn 컴포넌트가 riido 색을 쓰도록 연결) ---- */
@@ -189,27 +242,27 @@
   /* Primary */
   --primary-solid: #29d6c5;
   --primary-solid-strong: #24b2a4;
-  --primary-soft: #29d6c524;           /* Mint/500 14% */
-  --primary-border: #29d6c559;         /* Mint/500 35% */
-  --primary-text: #6adcd1;             /* Mint/400 */
-  --primary-soft-text: #98e7df;        /* Mint/300 */
+  --primary-soft: #29d6c524; /* Mint/500 14% */
+  --primary-border: #29d6c559; /* Mint/500 35% */
+  --primary-text: #6adcd1; /* Mint/400 */
+  --primary-soft-text: #98e7df; /* Mint/300 */
   --primary-on-solid: #181d21;
   /* Secondary (Blue) */
-  --secondary-text: #649cf7;           /* Blue/400 */
+  --secondary-text: #649cf7; /* Blue/400 */
   --secondary-solid: #2c78f2;
   --secondary-on-solid: #ffffff;
-  --secondary-soft: #2c78f229;         /* Blue/500 16% */
-  --secondary-soft-text: #9abef9;      /* Blue/300 */
-  --secondary-border: #2c78f259;       /* Blue/500 35% */
+  --secondary-soft: #2c78f229; /* Blue/500 16% */
+  --secondary-soft-text: #9abef9; /* Blue/300 */
+  --secondary-border: #2c78f259; /* Blue/500 35% */
   /* Text */
   --text-strong: #ffffff;
   --text-primary: #f3f5f6;
   --text-secondary: #b1b9be;
   --text-tertiary: #6b7780;
   --text-disable: #4f5b63;
-  --text-inverse: #181d21;             /* Gray/950 */
-  --text-link: #649cf7;                /* Blue/400 */
-  --text-brand: #6adcd1;               /* Mint/400 */
+  --text-inverse: #181d21; /* Gray/950 */
+  --text-link: #649cf7; /* Blue/400 */
+  --text-brand: #6adcd1; /* Mint/400 */
   --text-step-number: #272f35;
   /* Background */
   --background-canvas: #181d21;
@@ -220,44 +273,44 @@
   --background-answer: #1f262b;
   --background-inverse: #e8ebed;
   --background-disable: #3a444b;
-  --background-glass: #272f3573;       /* Gray/900 45% */
+  --background-glass: #272f3573; /* Gray/900 45% */
   --background-sidebar-scrollbar: #3a444b;
   --background-canvas-fade-solid: #181d21;
   --background-canvas-fade-soft: #181d21d4;
   --background-canvas-fade-transparent: #181d2100;
   /* Fill */
-  --fill-neutral: #272f35;             /* Gray/900 */
-  --fill-neutral-strong: #1f262b;      /* Gray/925 */
+  --fill-neutral: #272f35; /* Gray/900 */
+  --fill-neutral-strong: #1f262b; /* Gray/925 */
   --fill-surface-strong: #272f35;
-  --fill-disable: #3a444b;             /* Gray/800 */
-  --fill-inverse: #e8ebed;             /* Gray/200 */
-  --fill-hover: #ffffff14;             /* Gray/0 8% */
-  --fill-press: #ffffff1f;             /* Gray/0 12% */
-  --fill-hover-inverse: #3a444b14;     /* Gray/800 8% */
-  --fill-press-inverse: #3a444b1f;     /* Gray/800 12% */
+  --fill-disable: #3a444b; /* Gray/800 */
+  --fill-inverse: #e8ebed; /* Gray/200 */
+  --fill-hover: #ffffff14; /* Gray/0 8% */
+  --fill-press: #ffffff1f; /* Gray/0 12% */
+  --fill-hover-inverse: #3a444b14; /* Gray/800 8% */
+  --fill-press-inverse: #3a444b1f; /* Gray/800 12% */
   --fill-question-preview: #1f262b;
-  --fill-dim: #00000099;               /* Gray/1000 60% */
+  --fill-dim: #00000099; /* Gray/1000 60% */
   /* Border */
-  --border-subtle: #1f262b;            /* Gray/925 */
-  --border-default: #272f35;           /* Gray/900 */
+  --border-subtle: #1f262b; /* Gray/925 */
+  --border-default: #272f35; /* Gray/900 */
   --border-strong: #4f5b63;
-  --border-neutral: #4f5b63;           /* Gray/700 */
-  --border-neutral-strong: #3a444b;    /* Gray/800 */
+  --border-neutral: #4f5b63; /* Gray/700 */
+  --border-neutral-strong: #3a444b; /* Gray/800 */
   --border-disable: #3a444b;
   /* Button */
-  --button-primary: #29d6c5;           /* Mint/500 */
-  --button-strong: #f9fafb;            /* Gray/50 */
-  --button-surface: #1f262b;           /* Gray/925 */
-  --button-neutral: #272f35;           /* Gray/900 */
-  --button-neutral-soft: #3a444b;      /* Gray/800 */
-  --button-inverse: #e8ebed;           /* Gray/200 */
-  --button-inverse-soft: #f3f5f6;      /* Gray/100 */
+  --button-primary: #29d6c5; /* Mint/500 */
+  --button-strong: #f9fafb; /* Gray/50 */
+  --button-surface: #1f262b; /* Gray/925 */
+  --button-neutral: #272f35; /* Gray/900 */
+  --button-neutral-soft: #3a444b; /* Gray/800 */
+  --button-inverse: #e8ebed; /* Gray/200 */
+  --button-inverse-soft: #f3f5f6; /* Gray/100 */
   /* Icon */
-  --icon-primary: #f3f5f6;             /* Gray/100 */
-  --icon-secondary: #b1b9be;           /* Gray/400 */
-  --icon-tertiary: #6b7780;            /* Gray/600 */
+  --icon-primary: #f3f5f6; /* Gray/100 */
+  --icon-secondary: #b1b9be; /* Gray/400 */
+  --icon-tertiary: #6b7780; /* Gray/600 */
   --icon-disable: #6b7780;
-  --icon-inverse: #181d21;             /* Gray/950 */
+  --icon-inverse: #181d21; /* Gray/950 */
   --icon-bullet-marker: #ffffff;
   /* Status / Danger — 다크에선 대부분 Gray로 중화, 아이콘만 색 유지 */
   --status-danger-solid: #3a444b;
@@ -269,7 +322,7 @@
   --status-danger-soft-press: #1f262b;
   --status-danger-border: #3a444b;
   --status-danger-track: #3a444b;
-  --status-danger-icon: #f46773;       /* Danger/400 */
+  --status-danger-icon: #f46773; /* Danger/400 */
   /* Status / Warning */
   --status-warning-solid: #3a444b;
   --status-warning-solid-hover: #1f262b;
@@ -279,11 +332,11 @@
   --status-warning-soft: #272f35;
   --status-warning-soft-press: #1f262b;
   --status-warning-border: #3a444b;
-  --status-warning-icon: #f9ba4d;      /* Warning/400 */
+  --status-warning-icon: #f9ba4d; /* Warning/400 */
   /* Status / Success */
   --status-success-solid: #2ac057;
-  --status-success-text: #54d47a;      /* Success/400 */
-  --status-success-soft: #2ac05729;    /* Success/500 16% */
+  --status-success-text: #54d47a; /* Success/400 */
+  --status-success-soft: #2ac05729; /* Success/500 16% */
   --status-success-on-solid: #ffffff;
   /* shadcn / answer 매핑은 :root의 var() 참조가 그대로 다크 값을 따라가므로 재정의 불필요.
      단, 다크에서 값이 달라야 하는 것만 여기 추가 */
@@ -300,23 +353,34 @@
    ========================================================================= */
 @theme inline {
   /* Font */
-  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-sans:
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-heading: var(--font-sans);
   --tracking-tight: -0.4px;
   --tracking-normal: 0;
   --tracking-wide: 0.4px;
 
   /* Typography — Figma 텍스트 스타일 (font-weight는 font-medium 등으로 따로 지정) */
-  --text-welcome: 48px;        --text-welcome--line-height: 64px;   /* SemiBold, tracking-tight */
-  --text-title-20: 20px;       --text-title-20--line-height: 28px;  /* Normal=Medium, Strong=SemiBold, tight */
-  --text-title-18: 18px;       --text-title-18--line-height: 26px;  /* SemiBold, tight */
-  --text-title-16: 16px;       --text-title-16--line-height: 24px;  /* Medium, tight */
-  --text-body-24: 24px;        --text-body-24--line-height: 32px;   /* Regular */
-  --text-body-16: 16px;        --text-body-16--line-height: 24px;   /* Regular */
-  --text-body-16-reading: 16px; --text-body-16-reading--line-height: 28px;
-  --text-body-14: 14px;        --text-body-14--line-height: 20px;   /* Regular */
-  --text-caption-12: 12px;     --text-caption-12--line-height: 18px;/* Regular */
-  --text-button-16: 16px;      --text-button-16--line-height: 24px; /* Medium, tracking-wide */
+  --text-welcome: 48px;
+  --text-welcome--line-height: 64px; /* SemiBold, tracking-tight */
+  --text-title-20: 20px;
+  --text-title-20--line-height: 28px; /* Normal=Medium, Strong=SemiBold, tight */
+  --text-title-18: 18px;
+  --text-title-18--line-height: 26px; /* SemiBold, tight */
+  --text-title-16: 16px;
+  --text-title-16--line-height: 24px; /* Medium, tight */
+  --text-body-24: 24px;
+  --text-body-24--line-height: 32px; /* Regular */
+  --text-body-16: 16px;
+  --text-body-16--line-height: 24px; /* Regular */
+  --text-body-16-reading: 16px;
+  --text-body-16-reading--line-height: 28px;
+  --text-body-14: 14px;
+  --text-body-14--line-height: 20px; /* Regular */
+  --text-caption-12: 12px;
+  --text-caption-12--line-height: 18px; /* Regular */
+  --text-button-16: 16px;
+  --text-button-16--line-height: 24px; /* Medium, tracking-wide */
 
   /* Radius — Figma Radius 컬렉션 (rounded-10, rounded-12 …) */
   --radius-4: 4px;
@@ -337,9 +401,9 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 
   /* Elevation */
-  --shadow-s:  0 2px 4px -2px #181d210f, 0 4px 6px -1px #181d210f;
-  --shadow-m:  0 4px 6px -2px #181d2112, 0 10px 15px -3px #181d2112;
-  --shadow-l:  0 6px 10px -4px #181d2114, 0 16px 24px -6px #181d2114;
+  --shadow-s: 0 2px 4px -2px #181d210f, 0 4px 6px -1px #181d210f;
+  --shadow-m: 0 4px 6px -2px #181d2112, 0 10px 15px -3px #181d2112;
+  --shadow-l: 0 6px 10px -4px #181d2114, 0 16px 24px -6px #181d2114;
   --shadow-xl: 0 10px 15px -5px #181d211a, 0 24px 38px -10px #181d211f;
 
   /* Opacity */
