@@ -61,6 +61,15 @@ export function getIndexStatus() {
   return request<IndexStatus>('/api/v1/index-status');
 }
 
+/**
+ * 가이드 재수집 + 검색 인덱스 재생성. 수 분 걸릴 수 있어 202로 먼저 답하고 뒤에서 돈다.
+ * 끝났는지는 index-status의 rebuilding이 false가 되는 것으로 본다.
+ * 이미 도는 중이면 409 — 같은 임베딩을 두 번 사지 않도록 서버가 막는다.
+ */
+export function rebuildIndex() {
+  return request<{ status: string }>('/api/v1/index/rebuild', { method: 'POST' });
+}
+
 /* ── 근거 문서 ─────────────────────────────────────────── */
 
 export type AnswerUnitListParams = {

@@ -2,7 +2,7 @@ import { ExternalLinkIcon, SearchIcon } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
-import { getIndexStatus, listAnswerUnits } from '@/api/console';
+import { getIndexStatus, listAnswerUnits, rebuildIndex } from '@/api/console';
 import type { AnswerUnitListItem, ViewTypeCounts } from '@/api/types';
 import { VIEW_TYPE_LABELS } from '@/api/types';
 import { DocPanel } from '@/components/console/DocPanel';
@@ -127,6 +127,42 @@ export default function DocumentsPage() {
 
   const indexStatus = useResource(() => getIndexStatus(), []);
 
+  // 재빌드는 202로 먼저 답하고 뒤에서 돈다. 끝났는지는 index-status의 rebuilding으로 본다.
+  const [isStarting, setIsStarting] = useState(false);
+  const [rebuildError, setRebuildError] = useState<string | null>(null);
+  const serverRebuilding = indexStatus.data?.rebuilding ?? false;
+  // POST가 오가는 동안에도 버튼을 잠근다. 그 사이 한 번 더 눌려도 서버가 409로 막는다.
+  const isRebuilding = isStarting || serverRebuilding;
+
+  const reloadIndexStatus = indexStatus.reload;
+  const reloadDocuments = documents.reload;
+
+  const handleRebuild = async () => {
+    setRebuildError(null);
+    setIsStarting(true);
+    try {
+      await rebuildIndex();
+      reloadIndexStatus();
+    } catch (error) {
+      setRebuildError(error instanceof Error ? error.message : '재빌드를 시작하지 못했습니다.');
+    } finally {
+      setIsStarting(false);
+    }
+  };
+
+  // 도는 동안만 3초마다 확인하고, 끝나면(정리 시점) 문서 목록도 새로 받는다 —
+  // 본문과 링크가 갱신됐을 수 있어서다.
+  useEffect(() => {
+    if (!serverRebuilding) {
+      return;
+    }
+    const timer = setInterval(reloadIndexStatus, 3000);
+    return () => {
+      clearInterval(timer);
+      reloadDocuments();
+    };
+  }, [serverRebuilding, reloadIndexStatus, reloadDocuments]);
+
   const sourceOptions = useMemo(() => {
     const values = new Set((documents.data?.items ?? []).map((item) => item.source_type));
     if (sourceType) values.add(sourceType);
@@ -152,6 +188,9 @@ export default function DocumentsPage() {
         isLoading={indexStatus.isLoading}
         onReload={indexStatus.reload}
         onSelectDoc={(docId) => updateParams({ doc: docId }, false)}
+        onRebuild={() => void handleRebuild()}
+        isRebuilding={isRebuilding}
+        rebuildError={rebuildError}
       />
 
       <section className="bg-background-answer border-border-strong rounded-16 shadow-s overflow-hidden border">
