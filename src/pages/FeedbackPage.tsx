@@ -4,7 +4,13 @@ import { useSearchParams } from 'react-router';
 
 import { getFeedbackStats, listFeedback } from '@/api/console';
 import type { Agreement, FeedbackRating } from '@/api/types';
-import { AGREEMENT_LABELS, FEEDBACK_REASONS, ISSUE_LABELS, REASON_LABELS } from '@/api/types';
+import {
+  AGREEMENT_LABELS,
+  answerTypeLabel,
+  FEEDBACK_REASONS,
+  ISSUE_LABELS,
+  REASON_LABELS,
+} from '@/api/types';
 import { FeedbackPanel } from '@/components/console/FeedbackPanel';
 import { FeedbackStats } from '@/components/console/FeedbackStats';
 import { Pagination } from '@/components/console/Pagination';
@@ -201,7 +207,9 @@ export default function FeedbackPage() {
                           </p>
                         )}
                         {item.answer_type && (
-                          <p className="text-text-secondary text-xs">{item.answer_type}</p>
+                          <p className="text-text-secondary text-xs">
+                            {answerTypeLabel(item.answer_type)}
+                          </p>
                         )}
                       </td>
 

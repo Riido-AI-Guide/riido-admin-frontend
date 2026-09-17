@@ -5,7 +5,7 @@ import { Link, useSearchParams } from 'react-router';
 import { toUserMessage } from '@/api/client';
 import { listQna, runEvaluation, runEvaluations } from '@/api/console';
 import type { QnaLogOut, QnaStatus } from '@/api/types';
-import { EVALUATION_RUN_MAX, QNA_STATUS_LABELS } from '@/api/types';
+import { ANSWER_TYPES, EVALUATION_RUN_MAX, QNA_STATUS_LABELS, answerTypeLabel } from '@/api/types';
 import { Pagination } from '@/components/console/Pagination';
 import { QnaAnswer } from '@/components/console/QnaAnswer';
 import { VerdictBadge } from '@/components/console/Score';
@@ -176,9 +176,11 @@ export default function QnaLogsPage() {
   };
 
   const answerTypeOptions = useMemo(() => {
-    const values = new Set(items.map((item) => item.answer_type));
+    // 정해진 유형은 항상 이 순서로 두고, 서버가 모르는 값을 주면 뒤에 붙인다.
+    const values = new Set<string>(ANSWER_TYPES);
+    for (const item of items) values.add(item.answer_type);
     if (answerType) values.add(answerType);
-    return [...values].sort();
+    return [...values];
   }, [items, answerType]);
 
   return (
@@ -217,7 +219,7 @@ export default function QnaLogsPage() {
             <option value="">답변 유형 전체</option>
             {answerTypeOptions.map((option) => (
               <option key={option} value={option}>
-                {option}
+                {answerTypeLabel(option)}
               </option>
             ))}
           </NativeSelect>
@@ -347,7 +349,7 @@ export default function QnaLogsPage() {
                         </td>
 
                         <td className="px-3 py-3">
-                          <Badge tone="outline">{item.answer_type}</Badge>
+                          <Badge tone="outline">{answerTypeLabel(item.answer_type)}</Badge>
                         </td>
 
                         <td className="px-3 py-3">

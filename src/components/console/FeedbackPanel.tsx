@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 
 import { getFeedback } from '@/api/console';
-import { AGREEMENT_LABELS, ISSUE_LABELS, REASON_LABELS } from '@/api/types';
+import { AGREEMENT_LABELS, ISSUE_LABELS, REASON_LABELS, answerTypeLabel } from '@/api/types';
 import { Drawer } from '@/components/console/Drawer';
 import { ScoreBar, VerdictBadge } from '@/components/console/Score';
 import { ErrorBlock, LoadingBlock } from '@/components/console/StateBlock';
@@ -83,7 +83,9 @@ export function FeedbackPanel({ qnaUuid, onClose }: { qnaUuid: string; onClose: 
             >
               판정자와 {AGREEMENT_LABELS[feedback.agreement]}
             </Badge>
-            {feedback.answer_type && <Badge tone="outline">{feedback.answer_type}</Badge>}
+            {feedback.answer_type && (
+              <Badge tone="outline">{answerTypeLabel(feedback.answer_type)}</Badge>
+            )}
           </div>
 
           <div className="bg-background-surface border-border-neutral-strong rounded-12 mb-4 border p-4">

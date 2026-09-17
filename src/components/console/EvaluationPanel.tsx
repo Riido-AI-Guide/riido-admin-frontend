@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { toUserMessage } from '@/api/client';
 import { getEvaluation, listQna, runEvaluation } from '@/api/console';
 import type { AnswerEvaluationOut } from '@/api/types';
-import { ISSUE_LABELS } from '@/api/types';
+import { ISSUE_LABELS, answerTypeLabel } from '@/api/types';
 import { Drawer } from '@/components/console/Drawer';
 import { ScoreBar, VerdictBadge } from '@/components/console/Score';
 import { ErrorBlock, LoadingBlock } from '@/components/console/StateBlock';
@@ -95,7 +95,7 @@ export function EvaluationPanel({ qnaUuid, onClose, onChanged }: EvaluationPanel
         <>
           <div className="mb-4 flex flex-wrap items-center gap-2">
             <VerdictBadge verdict={evaluation.verdict} />
-            <Badge tone="outline">{evaluation.answer_type}</Badge>
+            <Badge tone="outline">{answerTypeLabel(evaluation.answer_type)}</Badge>
             {evaluation.conversation_id && (
               <Badge tone="neutral">대화 {evaluation.conversation_id}</Badge>
             )}

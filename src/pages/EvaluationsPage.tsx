@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router';
 import { toUserMessage } from '@/api/client';
 import { listEvaluations, runEvaluation } from '@/api/console';
 import type { AnswerEvaluationOut } from '@/api/types';
-import { EVALUATION_ISSUES, ISSUE_LABELS } from '@/api/types';
+import { ANSWER_TYPES, EVALUATION_ISSUES, ISSUE_LABELS, answerTypeLabel } from '@/api/types';
 import { EvaluationPanel } from '@/components/console/EvaluationPanel';
 import { Pagination } from '@/components/console/Pagination';
 import { ScoreChip, VerdictBadge } from '@/components/console/Score';
@@ -73,9 +73,11 @@ export default function EvaluationsPage() {
   const [runningId, setRunningId] = useState<string | null>(null);
 
   const answerTypeOptions = useMemo(() => {
-    const values = new Set((evaluations.data?.items ?? []).map((item) => item.answer_type));
+    // 정해진 유형은 항상 이 순서로 두고, 서버가 모르는 값을 주면 뒤에 붙인다.
+    const values = new Set<string>(ANSWER_TYPES);
+    for (const item of evaluations.data?.items ?? []) values.add(item.answer_type);
     if (answerType) values.add(answerType);
-    return [...values].sort();
+    return [...values];
   }, [evaluations.data, answerType]);
 
   const handleRun = async (item: AnswerEvaluationOut) => {
@@ -149,7 +151,7 @@ export default function EvaluationsPage() {
             <option value="">답변 유형 전체</option>
             {answerTypeOptions.map((option) => (
               <option key={option} value={option}>
-                {option}
+                {answerTypeLabel(option)}
               </option>
             ))}
           </NativeSelect>
@@ -194,7 +196,7 @@ export default function EvaluationsPage() {
                       <p className="text-text-secondary truncate text-xs">→ {item.cleaned_query}</p>
                     </td>
                     <td className="px-3 py-3">
-                      <Badge tone="outline">{item.answer_type}</Badge>
+                      <Badge tone="outline">{answerTypeLabel(item.answer_type)}</Badge>
                     </td>
                     <td className="px-3 py-3">
                       <VerdictBadge verdict={item.verdict} />
