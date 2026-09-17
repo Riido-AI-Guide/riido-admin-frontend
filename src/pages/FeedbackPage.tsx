@@ -4,7 +4,13 @@ import { useSearchParams } from 'react-router';
 
 import { getFeedbackStats, listFeedback } from '@/api/console';
 import type { Agreement, FeedbackRating } from '@/api/types';
-import { AGREEMENT_LABELS, FEEDBACK_REASONS, ISSUE_LABELS, REASON_LABELS } from '@/api/types';
+import {
+  AGREEMENT_LABELS,
+  answerTypeLabel,
+  FEEDBACK_REASONS,
+  ISSUE_LABELS,
+  REASON_LABELS,
+} from '@/api/types';
 import { FeedbackPanel } from '@/components/console/FeedbackPanel';
 import { FeedbackStats } from '@/components/console/FeedbackStats';
 import { Pagination } from '@/components/console/Pagination';
@@ -92,15 +98,15 @@ export default function FeedbackPage() {
         }
       />
 
-      <section className="border-border bg-card rounded-xl border">
-        <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
+      <section className="bg-background-answer border-border-strong rounded-16 shadow-s overflow-hidden border">
+        <div className="border-border-strong flex flex-wrap items-center gap-2 border-b px-5 py-3.5">
           <div className="relative min-w-56 flex-1">
-            <SearchIcon className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2" />
+            <SearchIcon className="text-icon-tertiary pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input
               value={keyword}
               onChange={(event) => setKeyword(event.target.value)}
               placeholder="질문 검색"
-              className="pl-8"
+              className="pl-9"
               aria-label="피드백 검색"
             />
           </div>
@@ -164,7 +170,7 @@ export default function FeedbackPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[58rem] border-collapse text-left">
-              <thead className="text-muted-foreground bg-muted/40 text-xs">
+              <thead className="text-text-secondary bg-background-surface border-border-strong text-caption-12 border-b">
                 <tr>
                   <th className="px-3 py-2 font-medium">질문</th>
                   <th className="w-24 px-3 py-2 font-medium">사용자</th>
@@ -185,27 +191,29 @@ export default function FeedbackPage() {
                     <tr
                       key={item.message_id}
                       className={cn(
-                        'border-b transition-colors',
-                        canOpen ? 'hover:bg-muted/60 cursor-pointer' : 'cursor-default',
-                        item.qna_uuid && item.qna_uuid === selected && 'bg-muted',
+                        'border-border-default border-b transition-colors',
+                        canOpen ? 'hover:bg-fill-hover cursor-pointer' : 'cursor-default',
+                        item.qna_uuid && item.qna_uuid === selected && 'bg-primary-soft',
                       )}
                       title={canOpen ? undefined : '우리 로그에 없는 턴이라 상세를 열 수 없습니다'}
                       onClick={() => canOpen && updateParams({ qna: item.qna_uuid ?? null }, false)}
                     >
-                      <td className="px-3 py-2.5">
+                      <td className="px-3 py-3">
                         {item.raw_query ? (
                           <p className="text-sm">{item.raw_query}</p>
                         ) : (
-                          <p className="text-muted-foreground text-sm italic">
+                          <p className="text-text-secondary text-sm italic">
                             로그에 없는 턴 (메시지 #{item.message_id})
                           </p>
                         )}
                         {item.answer_type && (
-                          <p className="text-muted-foreground text-xs">{item.answer_type}</p>
+                          <p className="text-text-secondary text-xs">
+                            {answerTypeLabel(item.answer_type)}
+                          </p>
                         )}
                       </td>
 
-                      <td className="px-3 py-2.5">
+                      <td className="px-3 py-3">
                         <Badge tone={isGood ? 'success' : 'danger'}>
                           {isGood ? (
                             <ThumbsUpIcon className="size-3" />
@@ -216,19 +224,19 @@ export default function FeedbackPage() {
                         </Badge>
                       </td>
 
-                      <td className="px-3 py-2.5">
+                      <td className="px-3 py-3">
                         {item.reason ? (
                           <Badge tone="outline">{REASON_LABELS[item.reason] ?? item.reason}</Badge>
                         ) : (
-                          <span className="text-muted-foreground text-xs">-</span>
+                          <span className="text-text-secondary text-xs">-</span>
                         )}
                       </td>
 
-                      <td className="px-3 py-2.5">
+                      <td className="px-3 py-3">
                         <VerdictBadge verdict={item.verdict} />
                       </td>
 
-                      <td className="px-3 py-2.5">
+                      <td className="px-3 py-3">
                         {item.faithfulness != null &&
                         item.answer_relevance != null &&
                         item.context_relevance != null ? (
@@ -238,7 +246,7 @@ export default function FeedbackPage() {
                             <ScoreChip label="문서" value={item.context_relevance} />
                           </div>
                         ) : (
-                          <span className="text-muted-foreground text-xs">-</span>
+                          <span className="text-text-secondary text-xs">-</span>
                         )}
                         {item.issues && item.issues.length > 0 && (
                           <div className="mt-1 flex flex-wrap gap-1">
@@ -251,13 +259,13 @@ export default function FeedbackPage() {
                         )}
                       </td>
 
-                      <td className="px-3 py-2.5">
+                      <td className="px-3 py-3">
                         <Badge tone={AGREEMENT_TONE[item.agreement]}>
                           {AGREEMENT_LABELS[item.agreement]}
                         </Badge>
                       </td>
 
-                      <td className="text-muted-foreground px-3 py-2.5 text-xs">
+                      <td className="text-text-secondary px-3 py-3 text-xs">
                         {formatDateTime(item.feedback_created_at)}
                       </td>
                     </tr>
@@ -269,7 +277,7 @@ export default function FeedbackPage() {
         )}
 
         {feedback.data && (
-          <div className="border-t px-4 py-3">
+          <div className="border-border-strong border-t px-5 py-3">
             <Pagination
               total={feedback.data.total}
               limit={feedback.data.limit}

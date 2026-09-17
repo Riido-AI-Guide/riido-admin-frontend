@@ -9,7 +9,7 @@ function Shell({ className, children }: { className?: string; children: ReactNod
   return (
     <div
       className={cn(
-        'text-muted-foreground flex flex-col items-center justify-center gap-2 px-6 py-12 text-sm',
+        'text-text-secondary flex flex-col items-center justify-center gap-2 px-6 py-12 text-sm',
         className,
       )}
     >
@@ -29,7 +29,7 @@ export function LoadingBlock({ label = '불러오는 중…' }: { label?: string
 
 export function ErrorBlock({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <Shell className="text-destructive">
+    <Shell className="text-danger-600 dark:text-danger-400">
       <AlertCircleIcon className="size-5" />
       <p>{message}</p>
       {onRetry && (

@@ -27,7 +27,7 @@ export function Drawer({ label, onClose, header, footer, children, className }: 
   return (
     <>
       <div
-        className="animate-in fade-in-0 fixed inset-0 z-40 bg-black/10 backdrop-blur-[1px]"
+        className="animate-in fade-in-0 bg-gray-1000/20 dark:bg-gray-1000/40 fixed inset-0 z-40 backdrop-blur-[1px]"
         onClick={onClose}
         aria-hidden
       />
@@ -35,21 +35,21 @@ export function Drawer({ label, onClose, header, footer, children, className }: 
         role="dialog"
         aria-label={label}
         className={cn(
-          'bg-background animate-in slide-in-from-right-4 fade-in-0 fixed inset-y-0 right-0 z-50 flex w-full max-w-xl flex-col border-l shadow-xl duration-150',
+          'bg-background-canvas border-border-strong animate-in slide-in-from-right-4 fade-in-0 fixed inset-y-0 right-0 z-50 flex w-full max-w-xl flex-col border-l shadow-xl duration-300',
           className,
         )}
       >
-        <header className="flex items-start justify-between gap-3 border-b px-5 py-4">
+        <header className="border-border-strong flex items-start justify-between gap-3 border-b px-6 py-4">
           <div className="min-w-0 flex-1">{header}</div>
           <Button variant="ghost" size="icon-sm" onClick={onClose} aria-label="닫기">
             <XIcon />
           </Button>
         </header>
 
-        <div className="flex-1 overflow-y-auto px-5 py-4">{children}</div>
+        <div className="riido-scrollbar flex-1 overflow-y-auto px-6 py-5">{children}</div>
 
         {footer && (
-          <footer className="flex items-center justify-between gap-3 border-t px-5 py-3">
+          <footer className="bg-background-surface border-border-strong flex items-center justify-between gap-3 border-t px-6 py-3">
             {footer}
           </footer>
         )}

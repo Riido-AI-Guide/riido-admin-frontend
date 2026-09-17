@@ -54,17 +54,17 @@ function GroupBlock({
   const docIds = data.doc_ids ?? [];
 
   return (
-    <div className="border-border rounded-lg border p-3">
+    <div className="bg-background-surface border-border-neutral-strong rounded-12 border p-4">
       <div className="mb-2 flex items-center gap-2">
         <Badge tone={data.count > 0 ? group.tone : 'success'}>
           {data.count.toLocaleString('ko-KR')}건
         </Badge>
         <span className="text-sm font-medium">{group.label}</span>
       </div>
-      <p className="text-muted-foreground mb-2 text-xs">{group.hint}</p>
+      <p className="text-text-secondary mb-2 text-xs">{group.hint}</p>
 
       {docIds.length === 0 ? (
-        <p className="text-muted-foreground text-xs">해당 문서가 없습니다.</p>
+        <p className="text-text-secondary text-xs">해당 문서가 없습니다.</p>
       ) : (
         <ul className="flex flex-wrap gap-1.5">
           {docIds.map((docId) => (
@@ -72,7 +72,7 @@ function GroupBlock({
               <button
                 type="button"
                 onClick={() => onSelectDoc(docId)}
-                className="border-border hover:bg-muted rounded-md border px-1.5 py-0.5 font-mono text-xs transition-colors"
+                className="bg-background-surface border-border-strong hover:bg-fill-hover rounded-6 border px-1.5 py-0.5 font-mono text-xs transition-colors"
               >
                 {docId}
               </button>
@@ -82,7 +82,7 @@ function GroupBlock({
       )}
 
       {data.count > docIds.length && (
-        <p className="text-muted-foreground mt-2 text-xs">
+        <p className="text-text-secondary mt-2 text-xs">
           앞 {docIds.length}건만 표본으로 표시합니다.
         </p>
       )}
@@ -93,17 +93,19 @@ function GroupBlock({
 /** /index-status를 근거로 "손봐야 할 문서"를 모아 보여준다. */
 export function ReviewPanel({ status, error, isLoading, onReload, onSelectDoc }: ReviewPanelProps) {
   return (
-    <section className="border-border bg-card mb-4 rounded-xl border p-4">
+    <section className="bg-background-answer border-border-strong rounded-16 shadow-s mb-4 border p-5">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           {status?.status === 'stale' ? (
-            <AlertTriangleIcon className="size-4 text-amber-600" />
+            <AlertTriangleIcon className="text-status-warning-icon size-5" />
           ) : (
-            <CheckCircle2Icon className="size-4 text-emerald-600" />
+            <CheckCircle2Icon className="text-status-success-solid size-5" />
           )}
-          <h2 className="text-sm font-semibold">검토가 필요한 문서</h2>
+          <h2 className="text-text-primary text-title-16 font-semibold tracking-[-0.4px]">
+            검토가 필요한 문서
+          </h2>
           {status && (
-            <span className="text-muted-foreground text-xs">
+            <span className="text-text-secondary text-xs">
               문서 {status.answer_units.toLocaleString('ko-KR')}건 · 마지막 빌드{' '}
               {formatDateTime(status.built_at)}
             </span>
@@ -116,7 +118,7 @@ export function ReviewPanel({ status, error, isLoading, onReload, onSelectDoc }:
         </Button>
       </div>
 
-      {error && <p className="text-destructive text-xs">{error}</p>}
+      {error && <p className="text-danger-600 dark:text-danger-400 text-xs">{error}</p>}
 
       {status && (
         <>
@@ -131,7 +133,7 @@ export function ReviewPanel({ status, error, isLoading, onReload, onSelectDoc }:
             ))}
           </div>
 
-          {status.hint && <p className="text-muted-foreground mt-3 text-xs">{status.hint}</p>}
+          {status.hint && <p className="text-text-secondary mt-3 text-xs">{status.hint}</p>}
         </>
       )}
     </section>

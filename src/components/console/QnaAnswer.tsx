@@ -18,23 +18,26 @@ export function QnaAnswer({ qnaUuid }: { qnaUuid: string }) {
   return (
     <div className="flex flex-col gap-3 text-xs">
       <div>
-        <p className="text-muted-foreground mb-1">검색에 쓴 질문</p>
+        <p className="text-text-secondary mb-1">검색에 쓴 질문</p>
         <p>{log.cleaned_query}</p>
       </div>
 
       <div>
-        <p className="text-muted-foreground mb-1">답변</p>
-        <p className="bg-background max-h-64 overflow-y-auto rounded-lg border p-3 leading-relaxed whitespace-pre-wrap">
+        <p className="text-text-secondary mb-1">답변</p>
+        <p className="bg-background-answer border-border-neutral-strong rounded-12 max-h-64 overflow-y-auto border p-3 leading-relaxed whitespace-pre-wrap">
           {log.answer_text || '답변 본문이 없습니다.'}
         </p>
       </div>
 
       {log.retrieved_doc_ids && log.retrieved_doc_ids.length > 0 && (
         <div>
-          <p className="text-muted-foreground mb-1">검색된 문서</p>
+          <p className="text-text-secondary mb-1">검색된 문서</p>
           <ul className="flex flex-wrap gap-1.5">
             {log.retrieved_doc_ids.map((docId) => (
-              <li key={docId} className="border-border rounded-md border px-1.5 py-0.5 font-mono">
+              <li
+                key={docId}
+                className="bg-background-surface border-border-strong rounded-6 border px-1.5 py-0.5 font-mono"
+              >
                 {docId}
               </li>
             ))}

@@ -169,6 +169,30 @@ export const ISSUE_LABELS: Record<string, string> = {
   retrieval_miss: '검색 실패',
 };
 
+/** 답변 유형. 표시용 라벨은 ANSWER_TYPE_LABELS에 있다. */
+export const ANSWER_TYPES = [
+  'concept',
+  'step',
+  'judgement',
+  'troubleshoot',
+  'explore',
+  'no_answer',
+] as const;
+
+export const ANSWER_TYPE_LABELS: Record<string, string> = {
+  concept: '개념형',
+  step: '단계형',
+  judgement: '판단형',
+  troubleshoot: '문제해결형',
+  explore: '탐색형',
+  no_answer: '답변 불가',
+};
+
+/** 모르는 유형이 오면 원래 값을 그대로 보여준다. */
+export function answerTypeLabel(value: string): string {
+  return ANSWER_TYPE_LABELS[value] ?? value;
+}
+
 export type AnswerEvaluationOut = {
   qna_uuid: string;
   conversation_id?: string | null;

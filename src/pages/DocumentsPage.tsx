@@ -36,22 +36,22 @@ function DocRow({
   return (
     <tr
       className={cn(
-        'hover:bg-muted/60 cursor-pointer border-b transition-colors',
-        isSelected && 'bg-muted',
+        'hover:bg-fill-hover border-border-default cursor-pointer border-b transition-colors',
+        isSelected && 'bg-primary-soft',
       )}
       onClick={onSelect}
     >
-      <td className="px-3 py-2.5">
+      <td className="px-3 py-3">
         <p className="text-sm font-medium">{item.title}</p>
-        <p className="text-muted-foreground truncate text-xs">{item.section}</p>
-        <p className="text-muted-foreground truncate font-mono text-[11px]">{item.doc_id}</p>
+        <p className="text-text-secondary truncate text-xs">{item.section}</p>
+        <p className="text-text-secondary truncate font-mono text-[11px]">{item.doc_id}</p>
       </td>
 
-      <td className="px-3 py-2.5">
+      <td className="px-3 py-3">
         <Badge tone="outline">{item.source_type}</Badge>
       </td>
 
-      <td className="px-3 py-2.5">
+      <td className="px-3 py-3">
         <div className="flex flex-wrap items-center gap-1.5">
           {units === 0 ? (
             <Badge tone="danger">문장 없음</Badge>
@@ -68,14 +68,14 @@ function DocRow({
         </div>
       </td>
 
-      <td className="px-3 py-2.5 text-right">
+      <td className="px-3 py-3 text-right">
         {item.url && (
           <a
             href={item.url}
             target="_blank"
             rel="noreferrer"
             onClick={(event) => event.stopPropagation()}
-            className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs underline underline-offset-2"
+            className="text-text-secondary hover:text-foreground inline-flex items-center gap-1 text-xs underline underline-offset-2"
           >
             원문 <ExternalLinkIcon className="size-3" />
           </a>
@@ -154,15 +154,15 @@ export default function DocumentsPage() {
         onSelectDoc={(docId) => updateParams({ doc: docId }, false)}
       />
 
-      <section className="border-border bg-card rounded-xl border">
-        <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
+      <section className="bg-background-answer border-border-strong rounded-16 shadow-s overflow-hidden border">
+        <div className="border-border-strong flex flex-wrap items-center gap-2 border-b px-5 py-3.5">
           <div className="relative min-w-56 flex-1">
-            <SearchIcon className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2" />
+            <SearchIcon className="text-icon-tertiary pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input
               value={keyword}
               onChange={(event) => setKeyword(event.target.value)}
               placeholder="제목·섹션·본문 검색"
-              className="pl-8"
+              className="pl-9"
               aria-label="근거 문서 검색"
             />
           </div>
@@ -199,7 +199,7 @@ export default function DocumentsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[46rem] border-collapse text-left">
-              <thead className="text-muted-foreground bg-muted/40 text-xs">
+              <thead className="text-text-secondary bg-background-surface border-border-strong text-caption-12 border-b">
                 <tr>
                   <th className="px-3 py-2 font-medium">문서</th>
                   <th className="w-24 px-3 py-2 font-medium">원본</th>
@@ -222,7 +222,7 @@ export default function DocumentsPage() {
         )}
 
         {documents.data && (
-          <div className="border-t px-4 py-3">
+          <div className="border-border-strong border-t px-5 py-3">
             <Pagination
               total={documents.data.total}
               limit={documents.data.limit}

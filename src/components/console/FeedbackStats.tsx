@@ -43,11 +43,13 @@ export function FeedbackStats({ stats, error, isLoading, onReload, onSelect }: F
   }
 
   return (
-    <section className="border-border bg-card mb-4 rounded-xl border p-4">
+    <section className="bg-background-answer border-border-strong rounded-16 shadow-s mb-4 border p-5">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-baseline gap-2">
-          <h2 className="text-sm font-semibold">사용자 평가 × 판정자 평가</h2>
-          <span className="text-muted-foreground text-xs">
+          <h2 className="text-text-primary text-title-16 font-semibold tracking-[-0.4px]">
+            사용자 평가 × 판정자 평가
+          </h2>
+          <span className="text-text-secondary text-xs">
             총 {total.toLocaleString('ko-KR')}건 · 칸을 누르면 그 조합만 봅니다
           </span>
         </div>
@@ -58,12 +60,12 @@ export function FeedbackStats({ stats, error, isLoading, onReload, onSelect }: F
       </div>
 
       {error ? (
-        <p className="text-destructive text-xs">{error}</p>
+        <p className="text-danger-600 dark:text-danger-400 text-xs">{error}</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-96 border-collapse text-sm">
             <thead>
-              <tr className="text-muted-foreground text-xs">
+              <tr className="text-text-secondary text-xs">
                 <th className="w-24 px-2 py-1 text-left font-medium">사용자 \ 판정자</th>
                 {COLUMNS.map((column) => (
                   <th key={column.key} className="w-24 px-2 py-1 text-left font-medium">
@@ -91,21 +93,21 @@ export function FeedbackStats({ stats, error, isLoading, onReload, onSelect }: F
                           disabled={count === 0}
                           onClick={() => onSelect(rating, agreement)}
                           className={cn(
-                            'w-full rounded-lg border px-2 py-2 text-left transition-colors',
+                            'rounded-12 w-full border px-3 py-2.5 text-left transition-colors',
                             count === 0
-                              ? 'border-border text-muted-foreground cursor-default'
-                              : 'hover:bg-muted border-border',
-                            isPriority && 'border-destructive/40 bg-destructive/10',
+                              ? 'border-border-default text-text-tertiary cursor-default'
+                              : 'hover:bg-fill-hover border-border-strong',
+                            isPriority && 'border-danger-400/60 bg-danger-50 dark:bg-danger-500/15',
                             agreement === 'mismatch' &&
                               count > 0 &&
                               !isPriority &&
-                              'bg-amber-500/10',
+                              'bg-warning-100/60 dark:bg-warning-500/10',
                           )}
                         >
                           <span className="block text-base font-semibold tabular-nums">
                             {count.toLocaleString('ko-KR')}
                           </span>
-                          <span className="text-muted-foreground block text-[11px]">
+                          <span className="text-text-secondary block text-[11px]">
                             {isPriority
                               ? '요주의'
                               : count === 0

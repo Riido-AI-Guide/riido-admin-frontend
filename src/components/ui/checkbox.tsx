@@ -21,7 +21,7 @@ function Checkbox({ className, indeterminate = false, ...props }: CheckboxProps)
       type="checkbox"
       data-slot="checkbox"
       className={cn(
-        'border-input accent-primary focus-visible:ring-ring/50 size-4 cursor-pointer rounded border align-middle focus-visible:ring-3 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40',
+        'border-border-strong accent-primary-solid focus-visible:ring-ring/50 size-4 cursor-pointer rounded border align-middle focus-visible:ring-3 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40',
         className,
       )}
       {...props}
