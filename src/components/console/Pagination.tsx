@@ -27,7 +27,7 @@ export function Pagination({
   const to = Math.min(offset + size, total);
 
   return (
-    <div className="text-muted-foreground flex flex-wrap items-center justify-between gap-3 text-xs">
+    <div className="text-text-secondary flex flex-wrap items-center justify-between gap-3 text-xs">
       <span className="tabular-nums">
         {from.toLocaleString('ko-KR')}–{to.toLocaleString('ko-KR')} / 총{' '}
         {total.toLocaleString('ko-KR')}건

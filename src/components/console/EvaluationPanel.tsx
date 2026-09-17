@@ -18,7 +18,7 @@ import { formatDateTime } from '@/lib/date';
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="mb-3">
-      <p className="text-muted-foreground mb-1 text-xs">{label}</p>
+      <p className="text-text-secondary mb-1 text-xs">{label}</p>
       <div className="text-sm">{children}</div>
     </div>
   );
@@ -69,15 +69,15 @@ export function EvaluationPanel({ qnaUuid, onClose, onChanged }: EvaluationPanel
       onClose={onClose}
       header={
         <>
-          <p className="text-muted-foreground truncate font-mono text-xs">{qnaUuid}</p>
-          <h2 className="truncate text-sm font-semibold">
+          <p className="text-text-secondary truncate font-mono text-xs">{qnaUuid}</p>
+          <h2 className="text-text-primary text-title-18 truncate font-semibold tracking-[-0.4px]">
             {evaluation?.raw_query ?? '불러오는 중…'}
           </h2>
         </>
       }
       footer={
         <>
-          <p className="text-muted-foreground text-xs">
+          <p className="text-text-secondary text-xs">
             판정자 LLM을 1회 호출합니다 — 수 초 걸립니다.
           </p>
           <Button size="sm" onClick={handleRerun} disabled={isRunning}>
@@ -101,7 +101,7 @@ export function EvaluationPanel({ qnaUuid, onClose, onChanged }: EvaluationPanel
             )}
           </div>
 
-          <div className="border-border mb-4 rounded-lg border p-3">
+          <div className="bg-background-surface border-border-neutral-strong rounded-12 mb-4 border p-4">
             <ScoreBar label="충실도" value={evaluation.faithfulness} />
             <div className="h-2" />
             <ScoreBar label="답변 관련성" value={evaluation.answer_relevance} />
@@ -119,13 +119,13 @@ export function EvaluationPanel({ qnaUuid, onClose, onChanged }: EvaluationPanel
                 ))}
               </div>
             ) : (
-              <span className="text-muted-foreground text-xs">없음</span>
+              <span className="text-text-secondary text-xs">없음</span>
             )}
           </Field>
 
           {evaluation.reason && (
             <Field label="감점 사유">
-              <p className="bg-muted/60 rounded-lg p-3 text-xs leading-relaxed whitespace-pre-wrap">
+              <p className="bg-background-surface-soft border-border-neutral-strong rounded-12 border p-3 text-xs leading-relaxed whitespace-pre-wrap">
                 {evaluation.reason}
               </p>
             </Field>
@@ -136,7 +136,7 @@ export function EvaluationPanel({ qnaUuid, onClose, onChanged }: EvaluationPanel
 
           {log?.answer_text && (
             <Field label="답변">
-              <p className="bg-muted/60 max-h-64 overflow-y-auto rounded-lg p-3 text-xs leading-relaxed whitespace-pre-wrap">
+              <p className="bg-background-surface-soft border-border-neutral-strong rounded-12 max-h-64 overflow-y-auto border p-3 text-xs leading-relaxed whitespace-pre-wrap">
                 {log.answer_text}
               </p>
             </Field>
@@ -148,7 +148,7 @@ export function EvaluationPanel({ qnaUuid, onClose, onChanged }: EvaluationPanel
                 {log.retrieved_doc_ids.map((docId) => (
                   <li
                     key={docId}
-                    className="border-border rounded-md border px-1.5 py-0.5 font-mono text-xs"
+                    className="bg-background-surface border-border-strong rounded-6 border px-1.5 py-0.5 font-mono text-xs"
                   >
                     {docId}
                   </li>
@@ -157,7 +157,7 @@ export function EvaluationPanel({ qnaUuid, onClose, onChanged }: EvaluationPanel
             </Field>
           )}
 
-          <div className="text-muted-foreground mt-4 flex flex-wrap gap-4 text-xs">
+          <div className="text-text-secondary mt-4 flex flex-wrap gap-4 text-xs">
             <span>최초 채점 {formatDateTime(evaluation.created_at)}</span>
             <span>마지막 갱신 {formatDateTime(evaluation.updated_at)}</span>
           </div>

@@ -102,15 +102,15 @@ export default function EvaluationsPage() {
 
   return (
     <div>
-      <section className="border-border bg-card rounded-xl border">
-        <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
+      <section className="bg-background-answer border-border-strong rounded-16 shadow-s overflow-hidden border">
+        <div className="border-border-strong flex flex-wrap items-center gap-2 border-b px-5 py-3.5">
           <div className="relative min-w-56 flex-1">
-            <SearchIcon className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2" />
+            <SearchIcon className="text-icon-tertiary pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input
               value={keyword}
               onChange={(event) => setKeyword(event.target.value)}
               placeholder="질문 검색"
-              className="pl-8"
+              className="pl-9"
               aria-label="평가 검색"
             />
           </div>
@@ -168,7 +168,7 @@ export default function EvaluationsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[56rem] border-collapse text-left">
-              <thead className="text-muted-foreground bg-muted/40 text-xs">
+              <thead className="text-text-secondary bg-background-surface border-border-strong text-caption-12 border-b">
                 <tr>
                   <th className="px-3 py-2 font-medium">질문</th>
                   <th className="w-24 px-3 py-2 font-medium">답변 유형</th>
@@ -184,31 +184,29 @@ export default function EvaluationsPage() {
                   <tr
                     key={item.qna_uuid}
                     className={cn(
-                      'hover:bg-muted/60 cursor-pointer border-b transition-colors',
-                      item.qna_uuid === selected && 'bg-muted',
+                      'hover:bg-fill-hover border-border-default cursor-pointer border-b transition-colors',
+                      item.qna_uuid === selected && 'bg-primary-soft',
                     )}
                     onClick={() => updateParams({ qna: item.qna_uuid }, false)}
                   >
-                    <td className="px-3 py-2.5">
+                    <td className="px-3 py-3">
                       <p className="text-sm">{item.raw_query}</p>
-                      <p className="text-muted-foreground truncate text-xs">
-                        → {item.cleaned_query}
-                      </p>
+                      <p className="text-text-secondary truncate text-xs">→ {item.cleaned_query}</p>
                     </td>
-                    <td className="px-3 py-2.5">
+                    <td className="px-3 py-3">
                       <Badge tone="outline">{item.answer_type}</Badge>
                     </td>
-                    <td className="px-3 py-2.5">
+                    <td className="px-3 py-3">
                       <VerdictBadge verdict={item.verdict} />
                     </td>
-                    <td className="px-3 py-2.5">
+                    <td className="px-3 py-3">
                       <div className="flex flex-wrap gap-1">
                         <ScoreChip label="충실" value={item.faithfulness} />
                         <ScoreChip label="답변" value={item.answer_relevance} />
                         <ScoreChip label="문서" value={item.context_relevance} />
                       </div>
                     </td>
-                    <td className="px-3 py-2.5">
+                    <td className="px-3 py-3">
                       <div className="flex flex-wrap gap-1">
                         {(item.issues ?? []).map((value) => (
                           <Badge key={value} tone="danger">
@@ -217,10 +215,10 @@ export default function EvaluationsPage() {
                         ))}
                       </div>
                     </td>
-                    <td className="text-muted-foreground px-3 py-2.5 text-xs">
+                    <td className="text-text-secondary px-3 py-3 text-xs">
                       {formatDateTime(item.updated_at)}
                     </td>
-                    <td className="px-3 py-2.5 text-right">
+                    <td className="px-3 py-3 text-right">
                       <Button
                         variant="outline"
                         size="xs"
@@ -246,7 +244,7 @@ export default function EvaluationsPage() {
         )}
 
         {evaluations.data && (
-          <div className="border-t px-4 py-3">
+          <div className="border-border-strong border-t px-5 py-3">
             <Pagination
               total={evaluations.data.total}
               limit={evaluations.data.limit}

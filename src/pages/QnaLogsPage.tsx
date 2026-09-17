@@ -183,15 +183,15 @@ export default function QnaLogsPage() {
 
   return (
     <div>
-      <section className="border-border bg-card rounded-xl border">
-        <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
+      <section className="bg-background-answer border-border-strong rounded-16 shadow-s overflow-hidden border">
+        <div className="border-border-strong flex flex-wrap items-center gap-2 border-b px-5 py-3.5">
           <div className="relative min-w-56 flex-1">
-            <SearchIcon className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2" />
+            <SearchIcon className="text-icon-tertiary pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input
               value={keyword}
               onChange={(event) => setKeyword(event.target.value)}
               placeholder="질문 검색"
-              className="pl-8"
+              className="pl-9"
               aria-label="질의응답 로그 검색"
             />
           </div>
@@ -227,7 +227,7 @@ export default function QnaLogsPage() {
           </Button>
         </div>
 
-        <div className="bg-muted/30 flex flex-wrap items-center gap-2 border-b px-4 py-2.5">
+        <div className="bg-background-surface border-border-strong flex flex-wrap items-center gap-2 border-b px-5 py-2.5">
           <Badge tone={pendingTotal.data ? 'warning' : 'success'}>
             미평가 {pendingTotal.data?.toLocaleString('ko-KR') ?? '-'}건
           </Badge>
@@ -243,7 +243,7 @@ export default function QnaLogsPage() {
           )}
 
           <div className="ml-auto flex flex-wrap items-center gap-2">
-            <span className="text-muted-foreground text-xs">
+            <span className="text-text-secondary text-xs">
               {selectedIds.length > 0 ? `${selectedIds.length}건 선택됨` : '선택 없음'}
             </span>
             <Button
@@ -275,7 +275,7 @@ export default function QnaLogsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[56rem] border-collapse text-left">
-              <thead className="text-muted-foreground bg-muted/40 text-xs">
+              <thead className="text-text-secondary bg-background-surface border-border-strong text-caption-12 border-b">
                 <tr>
                   <th className="w-10 px-3 py-2">
                     <Checkbox
@@ -308,12 +308,12 @@ export default function QnaLogsPage() {
                     <Fragment key={item.qna_uuid}>
                       <tr
                         className={cn(
-                          'hover:bg-muted/40 border-b transition-colors',
-                          isSelected && 'bg-muted/50',
+                          'hover:bg-fill-hover border-border-default border-b transition-colors',
+                          isSelected && 'bg-primary-soft',
                           isExpanded && 'border-b-0',
                         )}
                       >
-                        <td className="px-3 py-2.5">
+                        <td className="px-3 py-3">
                           <Checkbox
                             aria-label={`${item.raw_query} 선택`}
                             checked={isSelected}
@@ -339,24 +339,24 @@ export default function QnaLogsPage() {
                           </Button>
                         </td>
 
-                        <td className="px-3 py-2.5">
+                        <td className="px-3 py-3">
                           <p className="text-sm">{item.raw_query}</p>
-                          <p className="text-muted-foreground truncate text-xs">
+                          <p className="text-text-secondary truncate text-xs">
                             → {item.cleaned_query}
                           </p>
                         </td>
 
-                        <td className="px-3 py-2.5">
+                        <td className="px-3 py-3">
                           <Badge tone="outline">{item.answer_type}</Badge>
                         </td>
 
-                        <td className="px-3 py-2.5">
+                        <td className="px-3 py-3">
                           <Badge tone={STATUS_TONE[item.status]}>
                             {QNA_STATUS_LABELS[item.status]}
                           </Badge>
                         </td>
 
-                        <td className="px-3 py-2.5">
+                        <td className="px-3 py-3">
                           {item.status === 'evaluated' ? (
                             <Link
                               to={`/evaluations?qna=${encodeURIComponent(item.qna_uuid)}`}
@@ -365,15 +365,15 @@ export default function QnaLogsPage() {
                               <VerdictBadge verdict={item.verdict} />
                             </Link>
                           ) : (
-                            <span className="text-muted-foreground text-xs">-</span>
+                            <span className="text-text-secondary text-xs">-</span>
                           )}
                         </td>
 
-                        <td className="text-muted-foreground px-3 py-2.5 text-xs">
+                        <td className="text-text-secondary px-3 py-3 text-xs">
                           {formatDateTime(item.created_at)}
                         </td>
 
-                        <td className="px-3 py-2.5 text-right">
+                        <td className="px-3 py-3 text-right">
                           <Button
                             variant="outline"
                             size="xs"
@@ -396,8 +396,8 @@ export default function QnaLogsPage() {
                       </tr>
 
                       {isExpanded && (
-                        <tr className="border-b">
-                          <td colSpan={8} className="bg-muted/30 px-12 py-3">
+                        <tr className="border-border-default border-b">
+                          <td colSpan={8} className="bg-background-surface px-12 py-4">
                             <QnaAnswer qnaUuid={item.qna_uuid} />
                           </td>
                         </tr>
@@ -411,7 +411,7 @@ export default function QnaLogsPage() {
         )}
 
         {logs.data && (
-          <div className="border-t px-4 py-3">
+          <div className="border-border-strong border-t px-5 py-3">
             <Pagination
               total={logs.data.total}
               limit={logs.data.limit}

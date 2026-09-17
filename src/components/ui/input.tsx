@@ -3,17 +3,17 @@ import type { ComponentProps } from 'react';
 import { cn } from '@/lib/utils';
 
 const fieldBase =
-  'border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 w-full rounded-lg border bg-transparent text-sm transition-colors outline-none focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-3 dark:bg-input/30';
+  'bg-background-surface-soft border-border-strong text-text-primary placeholder:text-text-tertiary text-body-14 focus-visible:border-border-neutral focus-visible:ring-ring/50 aria-invalid:border-danger-400 aria-invalid:ring-danger-500/20 rounded-10 w-full border transition-colors outline-none focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-3';
 
 function Input({ className, ...props }: ComponentProps<'input'>) {
-  return <input data-slot="input" className={cn(fieldBase, 'h-8 px-2.5', className)} {...props} />;
+  return <input data-slot="input" className={cn(fieldBase, 'h-9 px-3', className)} {...props} />;
 }
 
 function Textarea({ className, ...props }: ComponentProps<'textarea'>) {
   return (
     <textarea
       data-slot="textarea"
-      className={cn(fieldBase, 'min-h-16 resize-y px-2.5 py-1.5 leading-relaxed', className)}
+      className={cn(fieldBase, 'min-h-16 resize-y px-3 py-2 leading-relaxed', className)}
       {...props}
     />
   );
@@ -27,7 +27,7 @@ function NativeSelect({ className, children, ...props }: ComponentProps<'select'
   return (
     <select
       data-slot="native-select"
-      className={cn(fieldBase, 'h-8 cursor-pointer px-2 pr-7', className)}
+      className={cn(fieldBase, 'h-9 cursor-pointer px-2.5 pr-7', className)}
       {...props}
     >
       {children}

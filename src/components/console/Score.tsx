@@ -17,12 +17,16 @@ export function ScoreBar({ label, value }: { label: string; value: number }) {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-muted-foreground w-20 shrink-0 text-xs">{label}</span>
-      <span className="bg-muted h-1.5 flex-1 overflow-hidden rounded-full">
+      <span className="text-text-secondary w-20 shrink-0 text-xs">{label}</span>
+      <span className="bg-fill-surface-strong h-1.5 flex-1 overflow-hidden rounded-full">
         <span
           className={cn(
             'block h-full rounded-full',
-            ratio >= 0.8 ? 'bg-emerald-500' : ratio >= 0.5 ? 'bg-amber-500' : 'bg-destructive',
+            ratio >= 0.8
+              ? 'bg-status-success-solid'
+              : ratio >= 0.5
+                ? 'bg-warning-500'
+                : 'bg-danger-500',
           )}
           style={{ width: `${ratio * 100}%` }}
         />
@@ -36,16 +40,16 @@ export function ScoreChip({ label, value }: { label: string; value: number }) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-xs tabular-nums',
+        'rounded-6 text-caption-12 inline-flex items-center gap-1 border px-1.5 py-px tabular-nums',
         value >= 0.8
-          ? 'border-emerald-600/20 text-emerald-700 dark:text-emerald-400'
+          ? 'border-success-300/60 text-success-700 dark:border-success-500/30 dark:text-success-400'
           : value >= 0.5
-            ? 'border-amber-600/20 text-amber-700 dark:text-amber-400'
-            : 'border-destructive/20 text-destructive',
+            ? 'border-warning-300/70 text-warning-800 dark:border-warning-500/30 dark:text-warning-300'
+            : 'border-danger-200 text-danger-700 dark:border-danger-500/30 dark:text-danger-300',
       )}
       title={label}
     >
-      <span className="text-muted-foreground">{label}</span>
+      <span className="text-text-secondary">{label}</span>
       {value.toFixed(2)}
     </span>
   );

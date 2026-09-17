@@ -5,10 +5,11 @@ import { ToastContext, type Toast, type ToastTone } from '@/hooks/useToast';
 import { cn } from '@/lib/utils';
 
 const TONE_STYLES: Record<ToastTone, string> = {
-  info: 'border-border bg-popover text-popover-foreground',
+  info: 'border-border-strong bg-background-answer text-text-primary [&_svg]:text-icon-secondary',
   success:
-    'border-emerald-600/30 bg-emerald-50 text-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-100',
-  error: 'border-destructive/30 bg-destructive/10 text-destructive',
+    'border-border-strong bg-background-answer text-text-primary [&_svg]:text-status-success-solid',
+  error:
+    'border-border-strong bg-background-answer text-text-primary [&_svg]:text-status-danger-icon',
 };
 
 const TONE_ICONS: Record<ToastTone, ReactNode> = {
@@ -42,7 +43,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             key={toast.id}
             role="status"
             className={cn(
-              'pointer-events-auto flex items-start gap-2 rounded-lg border px-3 py-2 text-sm shadow-md',
+              'rounded-12 text-body-14 shadow-l pointer-events-auto flex items-start gap-2 border px-3.5 py-2.5',
               'animate-in slide-in-from-bottom-2 fade-in-0',
               TONE_STYLES[toast.tone],
             )}

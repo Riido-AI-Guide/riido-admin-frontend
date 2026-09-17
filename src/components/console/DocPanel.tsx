@@ -212,10 +212,12 @@ export function DocPanel({ docId, onClose, onSaved }: DocPanelProps) {
       onClose={onClose}
       header={
         <>
-          <p className="text-muted-foreground truncate font-mono text-xs">{docId}</p>
-          <h2 className="truncate text-sm font-semibold">{detail?.title ?? '불러오는 중…'}</h2>
+          <p className="text-text-secondary truncate font-mono text-xs">{docId}</p>
+          <h2 className="text-text-primary text-title-18 truncate font-semibold tracking-[-0.4px]">
+            {detail?.title ?? '불러오는 중…'}
+          </h2>
           {detail && (
-            <p className="text-muted-foreground truncate text-xs">
+            <p className="text-text-secondary truncate text-xs">
               {detail.section}
               {detail.url && (
                 <a
@@ -234,7 +236,7 @@ export function DocPanel({ docId, onClose, onSaved }: DocPanelProps) {
       footer={
         isReady && (
           <>
-            <p className="text-muted-foreground text-xs">
+            <p className="text-text-secondary text-xs">
               {isDirty ? '저장하지 않은 변경이 있습니다.' : '변경 사항 없음'}
             </p>
             <div className="flex gap-2">
@@ -271,7 +273,7 @@ export function DocPanel({ docId, onClose, onSaved }: DocPanelProps) {
               <Badge tone="warning">낡은 문장 {coverage.outdated}건</Badge>
             ) : null}
             {coverage?.content_updated_at && (
-              <span className="text-muted-foreground text-xs">
+              <span className="text-text-secondary text-xs">
                 본문 수정 {formatDateTime(coverage.content_updated_at)}
               </span>
             )}
@@ -281,18 +283,20 @@ export function DocPanel({ docId, onClose, onSaved }: DocPanelProps) {
             {/* 질문 쿼리는 본문을 보고 쓰는 것이라 둘을 나란히 둔다. */}
             <section className="lg:sticky lg:top-0 lg:self-start">
               <div className="mb-2 flex items-center justify-between">
-                <h3 className="text-sm font-medium">본문</h3>
-                <span className="text-muted-foreground text-xs tabular-nums">
+                <h3 className="text-text-primary text-title-16 font-medium tracking-[-0.4px]">
+                  본문
+                </h3>
+                <span className="text-text-secondary text-xs tabular-nums">
                   {(detail?.content ?? '').length.toLocaleString('ko-KR')}자
                 </span>
               </div>
 
               {detail?.content ? (
-                <pre className="bg-muted/60 max-h-[60vh] overflow-y-auto rounded-lg p-3 text-xs leading-relaxed whitespace-pre-wrap">
+                <pre className="bg-background-surface-soft border-border-neutral-strong rounded-12 max-h-[60vh] overflow-y-auto border p-3 text-xs leading-relaxed whitespace-pre-wrap">
                   {detail.content}
                 </pre>
               ) : (
-                <p className="text-muted-foreground border-border rounded-lg border border-dashed px-3 py-6 text-center text-xs">
+                <p className="text-text-secondary border-border-strong rounded-12 border border-dashed px-3 py-6 text-center text-xs">
                   본문이 비어 있습니다.
                 </p>
               )}
@@ -300,14 +304,16 @@ export function DocPanel({ docId, onClose, onSaved }: DocPanelProps) {
 
             <section>
               <div className="mb-2 flex items-center justify-between">
-                <h3 className="text-sm font-medium">질문 쿼리</h3>
-                <span className="text-muted-foreground text-xs tabular-nums">
+                <h3 className="text-text-primary text-title-16 font-medium tracking-[-0.4px]">
+                  질문 쿼리
+                </h3>
+                <span className="text-text-secondary text-xs tabular-nums">
                   {rows.length} / {SENTENCE_MAX_PER_DOC}
                 </span>
               </div>
 
               {rows.length === 0 && (
-                <p className="text-muted-foreground border-border mb-3 rounded-lg border border-dashed px-3 py-6 text-center text-xs">
+                <p className="text-text-secondary border-border-strong rounded-12 mb-3 border border-dashed px-3 py-6 text-center text-xs">
                   등록된 질문 쿼리가 없습니다. 이 문서는 벡터 검색에서 걸리지 않습니다.
                 </p>
               )}
@@ -321,8 +327,10 @@ export function DocPanel({ docId, onClose, onSaved }: DocPanelProps) {
                     <li
                       key={row.key}
                       className={cn(
-                        'rounded-lg border p-2',
-                        row.outdated ? 'border-amber-600/40 bg-amber-500/5' : 'border-border',
+                        'rounded-12 border p-2.5',
+                        row.outdated
+                          ? 'border-warning-400/60 bg-warning-100/40 dark:bg-warning-500/10'
+                          : 'border-border-strong bg-background-surface',
                       )}
                     >
                       <div className="mb-1.5 flex items-center gap-2">
@@ -354,7 +362,9 @@ export function DocPanel({ docId, onClose, onSaved }: DocPanelProps) {
                         <span
                           className={cn(
                             'ml-auto text-xs tabular-nums',
-                            isInvalid ? 'text-destructive' : 'text-muted-foreground',
+                            isInvalid
+                              ? 'text-danger-600 dark:text-danger-400'
+                              : 'text-text-secondary',
                           )}
                         >
                           {length}/{SENTENCE_TEXT_MAX}
