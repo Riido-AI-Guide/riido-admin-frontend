@@ -1,4 +1,4 @@
-import { AlertTriangleIcon, CheckCircle2Icon, RefreshCwIcon } from 'lucide-react';
+import { AlertTriangleIcon, CheckCircle2Icon, HammerIcon, RefreshCwIcon } from 'lucide-react';
 
 import type { IndexStatus, StaleGroup } from '@/api/types';
 import { Badge } from '@/components/ui/badge';
@@ -40,6 +40,11 @@ type ReviewPanelProps = {
   isLoading: boolean;
   onReload: () => void;
   onSelectDoc: (docId: string) => void;
+  /** 가이드 재수집 + 인덱스 재생성 */
+  onRebuild: () => void;
+  /** 재빌드가 도는 중 — 버튼을 잠가 연타를 막는다 */
+  isRebuilding: boolean;
+  rebuildError: string | null;
 };
 
 function GroupBlock({
@@ -91,7 +96,16 @@ function GroupBlock({
 }
 
 /** /index-status를 근거로 "손봐야 할 문서"를 모아 보여준다. */
-export function ReviewPanel({ status, error, isLoading, onReload, onSelectDoc }: ReviewPanelProps) {
+export function ReviewPanel({
+  status,
+  error,
+  isLoading,
+  onReload,
+  onSelectDoc,
+  onRebuild,
+  isRebuilding,
+  rebuildError,
+}: ReviewPanelProps) {
   return (
     <section className="bg-background-answer border-border-strong rounded-16 shadow-s mb-4 border p-5">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
@@ -112,13 +126,24 @@ export function ReviewPanel({ status, error, isLoading, onReload, onSelectDoc }:
           )}
         </div>
 
-        <Button variant="ghost" size="xs" onClick={onReload} disabled={isLoading}>
-          {isLoading ? <Spinner className="size-3" /> : <RefreshCwIcon />}
-          다시 확인
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="xs" onClick={onReload} disabled={isLoading}>
+            {isLoading ? <Spinner className="size-3" /> : <RefreshCwIcon />}
+            다시 확인
+          </Button>
+          {/* 서버에서 손으로 돌리던 두 스크립트를 대신한다.
+              수 분 걸릴 수 있어 202로 먼저 답하고, 끝났는지는 rebuilding으로 본다 */}
+          <Button variant="outline" size="xs" onClick={onRebuild} disabled={isRebuilding}>
+            {isRebuilding ? <Spinner className="size-3" /> : <HammerIcon />}
+            {isRebuilding ? '빌드 중…' : '다시 빌드'}
+          </Button>
+        </div>
       </div>
 
       {error && <p className="text-danger-600 dark:text-danger-400 text-xs">{error}</p>}
+      {rebuildError && (
+        <p className="text-danger-600 dark:text-danger-400 text-xs">{rebuildError}</p>
+      )}
 
       {status && (
         <>
@@ -133,7 +158,20 @@ export function ReviewPanel({ status, error, isLoading, onReload, onSelectDoc }:
             ))}
           </div>
 
-          {status.hint && <p className="text-text-secondary mt-3 text-xs">{status.hint}</p>}
+          {/* 검색 문장은 자동 생성 경로가 없어 '다시 빌드'로 풀리지 않는다 — 그 안내만 남긴다.
+              나머지(원문 인덱스 없음·낡음)는 버튼이 처리하므로 명령어를 띄우지 않는다 */}
+          {isRebuilding ? (
+            <p className="text-text-secondary mt-3 text-xs">
+              가이드를 다시 받아 인덱스를 만드는 중입니다. 끝나면 위 숫자가 줄어듭니다.
+            </p>
+          ) : (
+            status.no_search_units.count > 0 && (
+              <p className="text-text-secondary mt-3 text-xs">
+                검색 문장이 없는 문서 {status.no_search_units.count}건은 &lsquo;다시 빌드&rsquo;로
+                채워지지 않습니다 — 문서를 열어 질문 쿼리를 직접 등록해야 합니다.
+              </p>
+            )
+          )}
         </>
       )}
     </section>

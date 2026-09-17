@@ -149,6 +149,8 @@ export type IndexStatus = {
   /** 옛 본문으로 색인된 문서 */
   outdated_content_vector: StaleGroup;
   hint?: string | null;
+  /** 재빌드가 도는 중인지. false가 될 때까지 폴링한다 */
+  rebuilding: boolean;
 };
 
 /* ── 평가 ─────────────────────────────────────────────── */
